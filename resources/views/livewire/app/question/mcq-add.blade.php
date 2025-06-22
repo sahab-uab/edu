@@ -32,6 +32,11 @@
                 target='image' />
             <x-ui.input textarea='true' label='প্রশ্নর টাইটেল*' hint='প্রশ্নর টাইটেল' wire:model.live='questiontitle'
                 target='latexInput' />
+
+            {{-- question --}}
+            <div class="gap-4 flex items-center">
+                <x-ui.input label='ভিডিও লিঙ্ক' hint='ভিডিও লিঙ্ক' wire:model='videoLink' target='videoLink' />
+            </div>
         </div>
     </div>
 
