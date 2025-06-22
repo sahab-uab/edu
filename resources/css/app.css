@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-base: "Noto Serif Bengali", serif;
+
+    --color-primary: #ff551b;
+    --color-secondary: #51be92;
+    --color-dark: #041b2f;
+
+    --radius-base: 0px;
+
+    --text-base: 14px;
+    --text-sm: 12px;
+    --text-banner: 64px;
+}
+
+@layer components {
+    .safearea {
+        @apply mx-auto w-full md:w-[90%] lg:w-[1100px] flex items-center px-4 text-base;
+    }
+
+    /* button */
+    .btn {
+        @apply py-2 px-4 text-base flex items-center justify-between gap-2 duration-300 rounded-base cursor-pointer;
+    }
+    .btn-primary {
+        @apply bg-primary text-white hover:bg-primary/90;
+    }
+    .btn-secondary {
+        @apply bg-secondary text-white hover:bg-secondary/90;
+    }
+    .btn-action {
+        @apply bg-secondary/10 text-dark hover:bg-secondary hover:text-white border border-secondary/30;
+    }
+    .btn-action-primary {
+        @apply bg-primary/10 text-dark hover:bg-primary hover:text-white border border-primary/30;
+    }
+}
+
+@layer base {
+    ::selection {
+        @apply bg-primary text-white;
+    }
+    html {
+        @apply scroll-smooth font-base;
+    }
+    ::-webkit-scrollbar {
+        width: 3px;
+        height: 3px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: var(--color-primary);
+        border-radius: var(--radius-base);
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    button {
+        @apply cursor-pointer;
+    }
+}
+/* for math formate */
+.mtext,
+.katex {
+    font-family: "Noto Serif Bengali", serif !important;
+    font-size: 14px !important;
+}
+.katex .mord {
+    font-family: inherit !important;
+}
+.katex .mathrm {
+    font-family: inherit !important;
+}
+.katex .mathit {
+    font-family: "KaTeX_Math", "Times New Roman", serif !important;
+}
+.math-preview math{
+    display: flex !important;
+    font-family: "Noto Serif Bengali", serif !important;
+}
