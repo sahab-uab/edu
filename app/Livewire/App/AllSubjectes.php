@@ -32,10 +32,14 @@ class AllSubjectes extends Component
         $sub = $this->editId ? ModelsAllsubject::find($this->editId) : new ModelsAllsubject();
         $sub->class_id = $this->class_id;
         $sub->name = $this->name;
-        $sub->save();
+        $save = $sub->save();
 
-        session()->flash('success', $this->editId ? 'বিষয় পরিবর্তন সফল হয়েছে।' : 'নতুন বিষয় যুক্ত হয়েছে।');
-        $this->reset(['name', 'class_id', 'editId']);
+        if ($save) {
+            session()->flash('success', $this->editId ? 'বিষয় পরিবর্তন সফল হয়েছে।' : 'নতুন বিষয় যুক্ত হয়েছে।');
+            $this->reset(['name', 'class_id', 'editId']);
+        } else {
+            session()->flash('error', 'বিষয় সংরক্ষণে ত্রুটি ঘটেছে।');
+        }
     }
 
     // fild clear

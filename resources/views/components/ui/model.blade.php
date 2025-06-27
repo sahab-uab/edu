@@ -1,4 +1,4 @@
-<div class="fixed top-0 left-0 w-full h-full backdrop-blur-md flex items-center justify-center z-[1000] duration-300 {{ $model == 'false' ? 'opacity-0 pointer-events-none' : '' }} p-6"
+<div class="fixed top-0 left-0 w-full h-full backdrop-blur-md flex items-center justify-center z-[1000] duration-200 {{ $model == 'false' ? 'opacity-0 pointer-events-none' : '' }} p-6"
     wire:click='{{ $bodyClose == 'true' ? $controller : '' }}'>
     <div class="bg-white rounded-base overflow-hidden border border-gray-200 shadow-lg" style="width: {{ $cardSize }}">
         @if ($headerfalse == 'false')
@@ -14,7 +14,7 @@
                     variant='action-primary' />
             </header>
         @endif
-        <div class="{{ $bodyClass }}">
+        <div class="{{ $bodyClass }} max-h-[calc(100vh-200px)] overflow-y-auto">
             {{ $slot }}
         </div>
     </div>

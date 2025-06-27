@@ -21,7 +21,8 @@
                         <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">ক্লাস
                             আইডি
                         </th>
-                        <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">ক্লাস নাম
+                        <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">ক্লাস
+                            নাম
                         </th>
                         <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">সর্বমোট
                             বিষয়

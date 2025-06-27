@@ -19,6 +19,7 @@ if (!function_exists('get_media')) {
     }
 }
 
+
 // Convert the resultant number’s digits to Bangla.
 if (!function_exists('formatToBangla')) {
     function formatToBangla($number)
@@ -59,29 +60,29 @@ if (!function_exists('date_to_bangla')) {
             '7' => '৭',
             '8' => '৮',
             '9' => '৯',
-            'Jan' => 'জানু',
-            'Feb' => 'ফেব',
+            'Jan' => 'জানুয়ারি',
+            'Feb' => 'ফেব্রুয়ারি',
             'Mar' => 'মার্চ',
-            'Apr' => 'এপ্রি',
+            'Apr' => 'এপ্রিল',
             'May' => 'মে',
             'Jun' => 'জুন',
-            'Jul' => 'জুল',
-            'Aug' => 'আগ',
-            'Sep' => 'সেপ',
-            'Oct' => 'অক্টো',
-            'Nov' => 'নভে',
-            'Dec' => 'ডিসে',
-            'Mon' => 'সোম',
-            'Tue' => 'মঙ্গল',
-            'Wed' => 'বুধ',
-            'Thu' => 'বৃহস্পতি',
-            'Fri' => 'শুক্র',
+            'Jul' => 'জুলাই',
+            'Aug' => 'আগস্ট',
+            'Sep' => 'সেপ্টেম্বর',
+            'Oct' => 'অক্টোবর',
+            'Nov' => 'নভেম্বর',
+            'Dec' => 'ডিসেম্বর',
+            'Mon' => 'সোমবার',
+            'Tue' => 'মঙ্গলবার',
+            'Wed' => 'বুধবার',
+            'Thu' => 'বৃহস্পতিবার',
+            'Fri' => 'শুক্রবার',
             'Sat' => 'শনিবার',
-            'Sun' => 'রবি',
+            'Sun' => 'রবিবার',
         ];
 
         $formatted = date('D M, Y', strtotime($dateString));
 
-        return strtr($formatted, $bn);
+        return strtr($formatted, $bn) . ' ইং';
     }
 }

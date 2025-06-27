@@ -61,7 +61,7 @@ class SidebarMenu extends Component
                 'icon' => 'ri-question-line',
                 'url' => '',
                 'text' => 'সকল প্রশ্ন',
-                'current' => ['ux.allquestions', 'ux.addquestions', 'ux.questions.type', 'ux.addquestions.mcq'],
+                'current' => ['ux.allquestions', 'ux.addquestions', 'ux.questions.type', 'ux.addquestions.mcq', 'ux.allcqquestions', 'ux.addquestions.sq', 'ux.allquestions.sq'],
                 'sub' => [
                     [
                         'url' => route('ux.allquestions'),
@@ -69,19 +69,24 @@ class SidebarMenu extends Component
                         'current' => 'ux.allquestions'
                     ],
                     [
-                        'url' => route('ux.questions.type'),
-                        'text' => 'প্রশ্ন ধরন',
-                        'current' => 'ux.questions.type'
-                    ],
-                    [
                         'url' => route('ux.addquestions.mcq'),
-                        'text' => 'MCQ প্রশ্ন',
+                        'text' => 'MCQ প্রশ্ন তৈরি',
                         'current' => 'ux.addquestions.mcq'
                     ],
                     [
                         'url' => route('ux.addquestions'),
-                        'text' => 'নতুন প্রশ্ন',
+                        'text' => 'CQ প্রশ্ন তৈরি',
                         'current' => 'ux.addquestions'
+                    ],
+                    [
+                        'url' => route('ux.addquestions.sq'),
+                        'text' => 'SQ প্রশ্ন তৈরি',
+                        'current' => 'ux.addquestions.sq'
+                    ],
+                    [
+                        'url' => route('ux.questions.type'),
+                        'text' => 'প্রশ্ন ধরন',
+                        'current' => 'ux.questions.type'
                     ],
                 ]
             ]

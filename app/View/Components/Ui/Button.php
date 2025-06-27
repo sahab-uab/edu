@@ -15,8 +15,9 @@ class Button extends Component
     public $size;
     public $target;
     public $iconposition;
+    public $route;
 
-    public function __construct($text = 'বাটন', $type = 'button', $variant = 'primary', $href = null, $iconclass = null, $class = '', $size = 'base', $target = '', $iconposition='right')
+    public function __construct($text = 'বাটন', $type = 'button', $variant = 'primary', $href = null, $iconclass = null, $class = '', $size = 'base', $target = '', $iconposition='right', $route = null)
     {
         $this->text = $text;
         $this->type = $type;
@@ -27,6 +28,7 @@ class Button extends Component
         $this->size = $size;
         $this->target = $target;
         $this->iconposition = $iconposition;
+        $this->route = $route;
     }
 
     public function render()

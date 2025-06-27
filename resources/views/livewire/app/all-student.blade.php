@@ -2,27 +2,31 @@
     {{-- header --}}
     <div class="flex items-center justify-between gap-3 border-b border-dotted border-gray-200 pb-4">
         <div class="flex items-center gap-2">
+            <x-ui.button text='' iconclass='ri-sound-module-line' size='xsm' class='mt-1'
+                onclick="toggleclass('#filter', ['hidden'])" />
             <x-ui.input size='sm' wire:model.live='search' type='search' hint='সার্চ করুন' />
-            @php
-                $searchSelect = [
-                    'male' => 'ছাত্র',
-                    'female' => 'ছাত্রী',
-                    'other' => 'অন্যান',
-                ];
-            @endphp
-            <x-ui.select wire:model.live='gender' :dataoption="$searchSelect" size='sm' />
-            @php
-                $statusSelect = [
-                    'active' => 'সচল',
-                    'inactive' => 'অচল',
-                ];
-            @endphp
-            <x-ui.select wire:model.live='statusselect' :dataoption="$statusSelect" size='sm' />
         </div>
         <x-ui.button wire:click='modelhandler' target='modelhandler' text='নতুন ইউজার' iconclass='ri-add-line'
-            iconposition='left' size='xsm' class='hidden md:flex'/>
-        <x-ui.button wire:click='modelhandler' class='md:hidden' target='modelhandler' text='' iconclass='ri-add-line'
-            iconposition='left' size='xsm' />
+            iconposition='left' size='xsm' class='hidden md:flex' />
+        <x-ui.button wire:click='modelhandler' class='md:hidden' target='modelhandler' text=''
+            iconclass='ri-add-line' iconposition='left' size='xsm' />
+    </div>
+    <div class="flex items-center gap-3 mt-4 hidden flex-wrap" id="filter">
+        @php
+            $searchSelect = [
+                'male' => 'ছাত্র',
+                'female' => 'ছাত্রী',
+                'other' => 'অন্যান',
+            ];
+        @endphp
+        <x-ui.select label='লিঙ্গ' wire:model.live='gender' :dataoption="$searchSelect" size='sm' />
+        @php
+            $statusSelect = [
+                'active' => 'সচল',
+                'inactive' => 'অচল',
+            ];
+        @endphp
+        <x-ui.select label='অবস্থা' wire:model.live='statusselect' :dataoption="$statusSelect" size='sm' />
     </div>
     <x-ui.alert />
 
@@ -56,7 +60,7 @@
                             </td>
                             <td class="px-4 text-base py-3 whitespace-nowrap font-medium text-gray-800">
                                 <div class="flex items-center gap-3">
-                                    <img src="{{ get_media($item->profile) }}"
+                                    <img src="@if ($item->profile) {{ asset('storage/' . $item->profile) }} @else {{ get_media() }} @endif"
                                         class="w-9 h-9 border border-gray-100 rounded-base">
                                     <div>
                                         <p class="text-sm">{{ $item->name }}</p>
@@ -97,7 +101,8 @@
                                     <button wire:click='edit({{ $item->id }})' class="py-1 px-2">
                                         <i class="ri-pencil-line text-blue-500"></i>
                                     </button>
-                                    <button wire:confirm="আপনি কি নিশ্চিত যে আপনি এই ছাত্র/ছত্রীটিকে মুছে ফেলতে চান?" wire:click='delete({{ $item->id }})' class="py-1 px-2">
+                                    <button wire:confirm="আপনি কি নিশ্চিত যে আপনি এই ছাত্র/ছত্রীটিকে মুছে ফেলতে চান?"
+                                        wire:click='delete({{ $item->id }})' class="py-1 px-2">
                                         <i class="ri-delete-bin-line text-red-500"></i>
                                     </button>
                                 </div>
@@ -120,29 +125,64 @@
     </div>
 
     {{-- add model --}}
-    <x-ui.model model='{{ $model }}' modelTitle='বাধ্যতামূলক তথ্য'
-        modelSubTitle='এই সকল তথ্য পূরণ করা বাধ্যতামূলক, কারণ একজন ছাত্র/ছাত্রী এই তথ্যগুলোর
-                    মাধ্যমে নিজের সকল কার্যক্রম সহজে ও সঠিকভাবে পরিচালনা করতে পারবে।'
-        cardSize='450px' controller='modelhandler'>
+    <x-ui.model model='{{ $model }}' modelTitle='ছাত্র/ছত্রী তথ্য যোগ করুন' cardSize='70%'
+        controller='modelhandler'>
         <form wire:submit.prevent="studentAdd">
-            <div class="w-full flex flex-col gap-3">
-                <x-ui.input target='name' wire:model='name' label='ছত্র/ছত্রীর নাম' hint='নাম' />
-                <x-ui.input target='email' wire:model='email' label='ইমেইল ঠিকানা' hint='ইমেইল' type='email' />
-                <x-ui.input target='password' wire:model='password' label='পাসওয়ার্ড' hint='পাসওয়ার্ড'
-                    type='password' />
-                @if ($editId)
+            <div class="w-full flex flex-col gap-4">
+                <div>
+                    <label for='profile'
+                        class="w-[135px] cursor-pointer h-[150px] border flex items-center justify-center border-gray-200 border-dotted bg-gray-50 rounded-base">
+                        @if ($profile)
+                            <img src="{{ $profile->temporaryUrl() }}" class="w-full h-full object-cover rounded-base">
+                        @elseif ($profileOld)
+                            <img src="{{ asset('storage/' . $profileOld) }}"
+                                class="w-full h-full object-cover rounded-base">
+                        @else
+                            <i class="ri-upload-line text-lg text-gray-500"></i>
+                        @endif
+                        <input type="file" id="profile" class="hidden" wire:model='profile' accept="image/*">
+                    </label>
+                    <small class='text-[10px] text-gray-500 text-center mt-1'>সাইজ 135px * 150px</small>
+                    @error('profile')
+                        <p class="text-red-500 text-sm">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+                    <x-ui.input target='name' wire:model='name' label='ছত্র/ছত্রীর নাম*' hint='নাম' />
+                    <x-ui.input target='email' wire:model='email' label='ইমেইল ঠিকানা*' hint='ইমেইল'
+                        type='email' />
+                    <x-ui.input target='password' wire:model='password' label='পাসওয়ার্ড*' hint='পাসওয়ার্ড'
+                        type='password' />
+                </div>
+                <div class='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+                    @php
+                        $gender = [
+                            'male' => 'পুরুষ',
+                            'female' => 'মহিলা',
+                            'other' => 'অন্যান্য',
+                        ];
+                    @endphp
+                    <x-ui.select target='f_gender' wire:model='f_gender' label='লিঙ্গ' :dataoption="$gender" />
+                    <x-ui.input target='bloodgroup' wire:model='bloodgroup' label='রক্তের গ্রুপ'
+                        hint='রক্তের গ্রুপ' />
+                    <x-ui.input target='date_of_birth' wire:model='date_of_birth' label='জন্ম তারিখ'
+                        hint='জন্ম তারিখ' type='date' />
+                    <x-ui.input target='bio' wire:model='bio' label='জীবনবৃত্তান্ত' hint='জীবনবৃত্তান্ত' />
+                </div>
+                <div class='grid grid-cols-1 md:grid-cols-2 gap-4'>
                     @php
                         $data = [
                             'active' => 'সচল',
                             'inactive' => 'অচল',
                         ];
                     @endphp
+                    <x-ui.input target='phone' wire:model='phone' label='ফোন নম্বর' hint='ফোন নম্বর' />
                     <x-ui.select target='status' wire:model='status' label='অবস্থা' :dataoption="$data" />
-                @endif
-                @php
-                    $btnText = $editId ? 'পরিবর্তন করুন' : 'সেভ করুন';
-                @endphp
-                <x-ui.button target='studentAdd' type='submit' text='{{ $btnText }}' class="justify-center" />
+                </div>
+                <x-ui.input target='address' wire:model='address' label='ঠিকানা' textarea='true' />
+
+                <x-ui.button target='studentAdd' type='submit' text='সেভ করুন' class="justify-center w-fit" />
             </div>
         </form>
     </x-ui.model>

@@ -64,22 +64,16 @@
         @apply cursor-pointer;
     }
 }
-/* for math formate */
-.mtext,
-.katex {
-    font-family: "Noto Serif Bengali", serif !important;
-    font-size: 14px !important;
+.math-container {
+    display: inline;
+    line-height: normal;
 }
-.katex .mord {
-    font-family: inherit !important;
+
+.bangla {
+    font-family: "SolaimanLipi", "Nikosh", sans-serif;
 }
-.katex .mathrm {
-    font-family: inherit !important;
-}
-.katex .mathit {
-    font-family: "KaTeX_Math", "Times New Roman", serif !important;
-}
-.math-preview math{
-    display: flex !important;
-    font-family: "Noto Serif Bengali", serif !important;
+
+.math {
+    display: inline-block;
+    margin: 0 1px;
 }

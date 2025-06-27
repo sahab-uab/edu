@@ -3,9 +3,9 @@
 namespace App\Livewire\App\Question;
 
 use App\Models\Allsubject;
+use App\Models\CqQuestion;
 use App\Models\GroupeClass;
 use App\Models\Lession;
-use App\Models\McqQuestion;
 use App\Models\QuestionType;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
@@ -14,7 +14,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 
 #[Layout('components.layouts.admin')]
-class AllQuestions extends Component
+class AllCqQuestion extends Component
 {
     use WithPagination;
 
@@ -24,34 +24,18 @@ class AllQuestions extends Component
     public $lession_id = '';
     public $type_id = '';
     public $model = 'false';
+    public $editId = 'false';
 
-    public $normal_question = null;
-    public $advance_question = null;
-    public $answer = null;
-    public $title = null;
-    public $editId = '';
-    public $image = '';
-    public $image_align = '';
-    public $video = '';
-
-
-    // status change
-    public function changestatus($id, $status)
-    {
-        $mcq = McqQuestion::find($id);
-        $mcq->status = $status;
-        $mcq->save();
-
-        session()->flash('success', 'প্রশ্নের অবস্থা পরিবর্তন করা হয়েছে।');
-    }
+    // view
+    public $viewData = [];
 
     // delete
     public function delete($id)
     {
-        $mcq = McqQuestion::find($id);
+        $mcq = CqQuestion::find($id);
         if ($mcq) {
-            if ($mcq->image_link && Storage::disk('public')->exists($mcq->image_link)) {
-                Storage::disk('public')->delete($mcq->image_link);
+            if ($mcq->image && Storage::disk('public')->exists($mcq->image)) {
+                Storage::disk('public')->delete($mcq->image);
             }
             $mcq->delete();
             session()->flash('success', 'প্রশ্নটি সফলভাবে মুছে ফেলা হয়েছে।');
@@ -60,36 +44,40 @@ class AllQuestions extends Component
         }
     }
 
-    // view
-    public function view($id)
-    {
-        $data = McqQuestion::find($id);
-        if (!$data) {
-            session()->flash('error', 'প্রশ্নটি পাওয়া যায়নি।');
-        }
-        $this->title = $data->title;
-        $this->normal_question = json_decode($data->normal_questions);
-        $this->advance_question = json_decode($data->advance_questions);
-        $this->answer = $data->right;
-        $this->editId = $data->id;
-        $this->image = $data->image_link;
-        $this->image_align = $data->image_positon;
-        $this->video = $data->video_link;
-        $this->model = 'true';
-    }
-
     // model handler
     public function modelHandler()
     {
         $this->model = $this->model == 'true' ? 'false' : 'true';
     }
 
-    #[Title('সকল প্রশ্ন')]
+    // view
+    public function view($id)
+    {
+        $data = CqQuestion::find($id);
+        if (!$data) {
+            session()->flash('error', 'প্রশ্নটি পাওয়া যায়নি।');
+        }
+        $this->editId = $id;
+        $this->viewData = $data;
+        $this->model = 'true';
+    }
+
+    // status change
+    public function changestatus($id, $status)
+    {
+        $mcq = CqQuestion::find($id);
+        $mcq->status = $status;
+        $mcq->save();
+
+        session()->flash('success', 'প্রশ্নের অবস্থা পরিবর্তন করা হয়েছে।');
+    }
+
+    #[Title('সকল CQ প্রশ্ন')]
     public function render()
     {
-        $query = McqQuestion::query();
+        $query = CqQuestion::query();
         if ($this->search) {
-            $query->where('title', 'like', '%' . $this->search . '%')
+            $query->where('questiontitle', 'like', '%' . $this->search . '%')
                 ->orWhere('status', 'like', '%' . $this->search . '%');
         }
         if ($this->class_id) {
@@ -110,7 +98,8 @@ class AllQuestions extends Component
         $all_subject = Allsubject::pluck('name', 'id')->toArray();
         $all_lession = Lession::pluck('name', 'id')->toArray();
         $question_type = QuestionType::pluck('name', 'id')->toArray();
-        return view('livewire.app.question.all-questions', [
+
+        return view('livewire.app.question.all-cq-question', [
             'data' => $data,
             'class' => $all_class,
             'subject' => $all_subject,

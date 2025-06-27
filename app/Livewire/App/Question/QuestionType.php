@@ -25,26 +25,33 @@ class QuestionType extends Component
 
         $type = $this->editId ? ModelsQuestionType::find($this->editId) : new ModelsQuestionType();
         $type->name = $this->name;
-        $type->save();
+        $save = $type->save();
 
-        session()->flash('success', $this->editId ? 'নতুন ধরন যুক্ত হয়েছে' : 'ধরন পরিবর্তন সফল হয়েছে');
-        $this->reset(['editId', 'name']);
+        if ($save) {
+            session()->flash('success', $this->editId ? 'নতুন ধরন যুক্ত হয়েছে' : 'ধরন পরিবর্তন সফল হয়েছে');
+            $this->reset(['editId', 'name']);
+        } else {
+            session()->flash('error', 'ধরন সংরক্ষণে ত্রুটি ঘটেছে।');
+        }
     }
 
     // clear fild
-    public function clearfild(){
+    public function clearfild()
+    {
         $this->reset(['name', 'search']);
     }
 
     // edit
-    public function edit($id){
+    public function edit($id)
+    {
         $data = ModelsQuestionType::find($id);
         $this->editId = $data->id;
         $this->name = $data->name;
     }
 
     // delete
-    public function delete($id){
+    public function delete($id)
+    {
         ModelsQuestionType::find($id)->delete();
 
         session()->flash('success', 'একটি ধরন মুছে ফেলা হয়ছে');
@@ -56,7 +63,7 @@ class QuestionType extends Component
     {
         $query = ModelsQuestionType::query();
         if ($this->search) {
-            $query->where('name', 'like', '%'. $this->search . '%');
+            $query->where('name', 'like', '%' . $this->search . '%');
         }
         $data = $query->latest()->paginate(10);
         return view('livewire.app.question.question-type', [

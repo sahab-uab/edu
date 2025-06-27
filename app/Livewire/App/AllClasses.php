@@ -33,11 +33,15 @@ class AllClasses extends Component
 
         $clas = $this->editId ? GroupeClass::find($this->editId) : new GroupeClass();
         $clas->name = $this->name;
-        $clas->save();
+        $save = $clas->save();
 
-        session()->flash('success', $this->editId ? 'ক্লাস পরিবর্তন সফল হয়েছে।' : 'নতুন ক্লাস যুক্ত হয়েছে।');
-        $this->reset(['name', 'editId']);
-        $this->model = 'false';
+        if ($save) {
+            session()->flash('success', $this->editId ? 'ক্লাস পরিবর্তন সফল হয়েছে।' : 'নতুন ক্লাস যুক্ত হয়েছে।');
+            $this->reset(['name', 'editId']);
+            $this->model = 'false';
+        } else {
+            session()->flash('error', 'ক্লাস সংরক্ষণে ত্রুটি ঘটেছে।');
+        }
     }
 
     // edit

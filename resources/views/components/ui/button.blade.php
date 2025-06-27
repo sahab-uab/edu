@@ -25,6 +25,20 @@
             @endif
         @endif
     </a>
+@elseif ($route)
+    <a wire:navigate href="{{ $route }}" {{ $attributes->merge(['class' => $classes]) }}>
+        @if ($iconposition == 'left')
+            @if ($iconclass)
+                <i class="{{ $iconclass }}" wire:loading.remove wire:target='{{ $target }}'></i>
+            @endif
+        @endif
+        {{ $text }}
+        @if ($iconposition == 'right')
+            @if ($iconclass)
+                <i class="{{ $iconclass }}" wire:loading.remove wire:target='{{ $target }}'></i>
+            @endif
+        @endif
+    </a>
 @else
     <button wire:target='{{ $target }}' wire:loadng.att='disabled' type="{{ $type }}"
         {{ $attributes->merge(['class' => $classes]) }}>

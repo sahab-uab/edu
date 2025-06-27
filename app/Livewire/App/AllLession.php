@@ -38,10 +38,14 @@ class AllLession extends Component
         $les->class_id = $this->class_id;
         $les->subject_id = $this->subject_id;
         $les->name = $this->name;
-        $les->save();
+        $save = $les->save();
 
-        session()->flash('success', $this->editId ? 'অধ্যায় পরিবর্তন সফয় হয়েছে।' : 'নতুন অধ্যায় তৈরী করা সফল হয়ছে।');
-        $this->reset(['subject_id', 'class_id', 'name', 'editId']);
+        if ($save) {
+            session()->flash('success', $this->editId ? 'অধ্যায় পরিবর্তন সফয় হয়েছে।' : 'নতুন অধ্যায় তৈরী করা সফল হয়ছে।');
+            $this->reset(['subject_id', 'class_id', 'name', 'editId']);
+        } else {
+            session()->flash('error', 'অধ্যায় সংরক্ষণে ত্রুটি ঘটেছে।');
+        }
     }
 
     // clear fild
@@ -61,7 +65,8 @@ class AllLession extends Component
     }
 
     // delte
-    public function delete($id){
+    public function delete($id)
+    {
         Lession::find($id)->delete();
 
         session()->flash('success', 'একটি অধ্যায় মুছে ফেলা হয়ছে।');
@@ -87,7 +92,7 @@ class AllLession extends Component
         $allsubject = [];
         if ($this->class_id) {
             $allsubject = Allsubject::where('class_id', $this->class_id)->pluck('name', 'id')->toArray();
-        }else{
+        } else {
             $allsubject = Allsubject::pluck('name', 'id')->toArray();
         }
         return view('livewire.app.all-lession', [

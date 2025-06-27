@@ -14,7 +14,7 @@
                 text='' iconclass='ri-user-line' variant='action-primary' size='xsm' />
 
             <div id="profiledropdown"
-                class="absolute translate-y-5 pointer-events-none opacity-0 duration-300 pb-1 min-w-[130px] top-full flex flex-col mt-3 bg-white rounded-base border border-gray-200 right-0">
+                class="absolute translate-y-5 pointer-events-none opacity-0 duration-300 pb-1 min-w-[130px] top-full flex flex-col mt-3 bg-white rounded-base border border-gray-200 right-0 z-[30]">
                 <div class="flex flex-col items-center gap-2 mb-2 p-3 bg-gray-50/50 rounded-base">
                     <img src="{{ get_media(Auth::user()->profile) }}" class="w-7 h-7 rounded-base">
                     <div>

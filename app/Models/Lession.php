@@ -16,4 +16,8 @@ class Lession extends Model
     {
         return $this->belongsTo(Allsubject::class, 'subject_id');
     }
+    public function mcqQuestion(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(McqQuestion::class, 'lession_id');
+    }
 }

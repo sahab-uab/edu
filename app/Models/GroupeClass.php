@@ -13,9 +13,13 @@ class GroupeClass extends Model
     {
         return $this->hasMany(ModelsAllsubject::class, 'class_id');
     }
-    
+
     public function lession(): HasMany
     {
         return $this->hasMany(Lession::class, 'class_id');
+    }
+    public function mcqQuestion(): HasMany
+    {
+        return $this->hasMany(McqQuestion::class, 'class_id');
     }
 }

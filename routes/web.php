@@ -10,6 +10,9 @@ use App\Livewire\App\AllSubject;
 use App\Livewire\App\AllSubjectes;
 use App\Livewire\App\AllUser;
 use App\Livewire\App\Dashboard;
+use App\Livewire\App\Question\AddSqQuestion;
+use App\Livewire\App\Question\AllCqQuestion;
+use App\Livewire\App\Question\AllSqQuestion;
 use App\Livewire\App\Question\McqAdd;
 use App\Livewire\App\Question\QuestionType;
 use App\Livewire\Ui\Auth\Google;
@@ -45,10 +48,13 @@ Route::prefix('/app')->middleware(['authCheck', 'checkrole'])->group(function ()
         Route::get('/all-subject', AllSubjectes::class)->name('ux.allsubject');
         Route::get('/all-lession', AllLession::class)->name('ux.alllession');
         // for questions
-        Route::get('/all-questions', AllQuestions::class)->name('ux.allquestions');
         Route::get('/question-type', QuestionType::class)->name('ux.questions.type');
-        Route::get('/add-questions', AddQuestions::class)->name('ux.addquestions');
+        Route::get('/all-questions', AllQuestions::class)->name('ux.allquestions');
         Route::get('/add-mcq-questions', McqAdd::class)->name('ux.addquestions.mcq');
+        Route::get('/all-cq-questions', AllCqQuestion::class)->name('ux.allcqquestions');
+        Route::get('/add-questions', AddQuestions::class)->name('ux.addquestions');
+        Route::get('/all-sq-questions', AllSqQuestion::class)->name('ux.allquestions.sq');
+        Route::get('/add-sq-questions', AddSqQuestion::class)->name('ux.addquestions.sq');
     });
 
     Route::get('/logout', Logout::class)->name('logout');

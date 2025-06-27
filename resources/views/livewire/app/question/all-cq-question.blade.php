@@ -1,7 +1,7 @@
 <div>
     <div class="flex items-center gap-2 w-fit">
-        <x-ui.button href='ux.allquestions' text='সকল MCQ প্রশ্ন' size='xsm' />
-        <x-ui.button href='ux.allcqquestions' text='সকল CQ প্রশ্ন' size='xsm' variant='action-primary' />
+        <x-ui.button href='ux.allquestions' text='সকল MCQ প্রশ্ন' size='xsm' variant='action-primary' />
+        <x-ui.button href='ux.allcqquestions' text='সকল CQ প্রশ্ন' size='xsm' />
         <x-ui.button href='ux.allquestions.sq' text='সকল SQ প্রশ্ন' size='xsm' variant='action-primary' />
     </div>
 
@@ -13,9 +13,9 @@
                     onclick="toggleclass('#filter', ['hidden'])" />
                 <x-ui.input size='sm' wire:model.live='search' type='search' hint='সার্চ করুন' />
             </div>
-            <x-ui.button href='ux.addquestions.mcq' text='নতুন প্রশ্ন' iconclass='ri-add-line' iconposition='left'
+            <x-ui.button href='ux.addquestions' text='নতুন প্রশ্ন' iconclass='ri-add-line' iconposition='left'
                 size='xsm' class='hidden md:flex' />
-            <x-ui.button href='ux.addquestions.mcq' class='md:hidden' text='' iconclass='ri-add-line'
+            <x-ui.button href='ux.addquestions' class='md:hidden' text='' iconclass='ri-add-line'
                 iconposition='left' size='xsm' />
         </div>
         <div class="flex items-center gap-3 mt-4 hidden flex-wrap" id="filter">
@@ -70,13 +70,11 @@
                                         {{ $item->lession->name }}
                                         <i class="ri-arrow-right-line text-sm text-gray-500"></i>
                                         {{ $item->type->name }}
-                                        <i class="ri-arrow-right-line text-sm text-gray-500"></i>
-                                        {{ $item->lavel == 'genarel' ? 'সাধারণ MCQ' : 'উচ্চতর দক্ষতা MCQ' }}
                                     </p>
                                 </td>
                                 <td class="px-4 text-base py-3 text-gray-600 font-semibold max-w-[200px]">
                                     <p class='math-container text-sm'>
-                                        {!! $item->title !!}
+                                        {!! $item->questiontitle !!}
                                     </p>
                                 </td>
                                 <td class="px-4 text-base py-3 whitespace-nowrap">
@@ -112,11 +110,11 @@
                                         <button wire:click='view({{ $item->id }})' class="py-1 px-2">
                                             <i class="ri-eye-line text-blue-500"></i>
                                         </button>
-                                        <a href='{{ route('ux.addquestions.mcq', ['id' => $item->id]) }}' wire:navigate
+                                        <a href='{{ route('ux.addquestions', ['id' => $item->id]) }}' wire:navigate
                                             class="py-1 px-2">
                                             <i class="ri-pencil-line text-blue-500"></i>
                                         </a>
-                                        <button wire:confirm="আপনি কি নিশ্চিত যে আপনি এই MCQটি মুছে ফেলতে চান?"
+                                        <button wire:confirm="আপনি কি নিশ্চিত যে আপনি এই CQ টি মুছে ফেলতে চান?"
                                             wire:click='delete({{ $item->id }})' class="py-1 px-2">
                                             <i class="ri-delete-bin-line text-red-500"></i>
                                         </button>
@@ -131,7 +129,7 @@
                     class="w-full flex flex-col items-center justify-center p-5 rounded-base border border-gray-100 mt-4">
                     <i class="ri-emotion-sad-line text-gray-500 text-3xl"></i>
                     <p class="text-base font-semibold text-gray-500 mt-2">কোন প্রশ্ন পাওয়া যায়নি!</p>
-                    <x-ui.button href='ux.addquestions.mcq' text='নতুন প্রশ্ন যোগ করুন' iconclass='ri-add-line'
+                    <x-ui.button href='ux.addquestions' text='নতুন প্রশ্ন যোগ করুন' iconclass='ri-add-line'
                         iconposition='left' size='xsm' class='mt-3' />
                 </div>
             @endif
@@ -144,64 +142,77 @@
     {{-- add model --}}
     <x-ui.model model='{{ $model }}' modelTitle='প্রশ্নর প্রিভিউ' cardSize='600px'
         controller='modelHandler'>
-        <div class="p-4">
-            @if ($image)
-                <div class="flex items-center mb-4 justify-{{ $image_align }}">
-                    <img src="{{ asset('storage/' . $image) }}" alt="Image Preview"
+        @if ($viewData)
+            <div class="p-4">
+            @empty(!$viewData->image)
+                <div class="flex items-center mb-4 justify-{{ $viewData->image_align }}">
+                    <img src="{{ asset('storage/' . $viewData->image) }}" alt="Image Preview"
                         class="mt-2 h-32 rounded-base" />
                 </div>
-            @endif
-            <h2 class="text-base font-semibold math-container">প্রশ্নঃ {!! $title ?? '' !!}</h2>
-            <div class="mt-5 grid grid-cols-2 gap-5">
-                @php
-                    $options_key = [
-                        'option_a' => 'ক',
-                        'option_b' => 'খ',
-                        'option_c' => 'গ',
-                        'option_d' => 'ঘ',
-                    ];
-                @endphp
-                @if ($normal_question)
-                    @foreach ($normal_question as $key => $val)
-                        <div class="flex items-center gap-2 text-sm">
-                            {{ $options_key[$key] ?? '' }}. <span
-                                class="math-container">{!! $val !!}</span>
-                            @if ($val == $answer)
-                                <i class="ri-checkbox-circle-line text-green-400 text-base"></i>
-                            @endif
-                        </div>
-                    @endforeach
-                @endif
-            </div>
-            @if ($advance_question)
-                <h1 class="text-base font-semibold mt-5 text-dark">নিচের কোনটি সঠিক?</h1>
-                <div class="mt-5 grid grid-cols-2 gap-5">
-                    @foreach ($advance_question as $key => $val)
-                        <div class="flex items-center gap-2 text-sm">
-                            {{ $options_key[$key] ?? '' }}. <span
-                                class="math-container">{!! $val !!}</span>
-                            @if ($val == $answer)
-                                <i class="ri-checkbox-circle-line text-green-400 text-base"></i>
-                            @endif
-                        </div>
-                    @endforeach
+            @endempty
+            <h2 class="text-base font-semibold math-container">{{ $viewData->questiontitle ?? '' }}</h2>
+            <div class="mt-4 flex flex-col gap-4">
+                <div>
+                    <div class="flex items-center gap-x-2 text-sm text-gray-600">
+                        <span class="text-dark">প্রশ্নঃ </span>
+                        <span>{{ $viewData->q_1 }}</span>
+                    </div>
+                    <div class="flex items-center gap-x-2 text-sm text-gray-600 mt-1">
+                        <span class="text-dark">উত্তরঃ </span>
+                        <span>{{ $viewData->q_1_ans ?? 'নেই' }}</span>
+                    </div>
                 </div>
-            @endif
+                {{-- 2 --}}
+                <div>
+                    <div class="flex items-center gap-x-2 text-sm text-gray-600">
+                        <span class="text-dark">প্রশ্নঃ </span>
+                        <span>{{ $viewData->q_2 }}</span>
+                    </div>
+                    <div class="flex items-center gap-x-2 text-sm text-gray-600 mt-1">
+                        <span class="text-dark">উত্তরঃ </span>
+                        <span>{{ $viewData->q_2_ans ?? 'নেই' }}</span>
+                    </div>
+                </div>
+                {{-- 3 --}}
+                <div>
+                    <div class="flex items-center gap-x-2 text-sm text-gray-600">
+                        <span class="text-dark">প্রশ্নঃ </span>
+                        <span>{{ $viewData->q_3 }}</span>
+                    </div>
+                    <div class="flex items-center gap-x-2 text-sm text-gray-600 mt-1">
+                        <span class="text-dark">উত্তরঃ </span>
+                        <span>{{ $viewData->q_3_ans ?? 'নেই' }}</span>
+                    </div>
+                </div>
+                {{-- 4 --}}
+                <div>
+                    <div class="flex items-center gap-x-2 text-sm text-gray-600">
+                        <span class="text-dark">প্রশ্নঃ </span>
+                        <span>{{ $viewData->q_4 }}</span>
+                    </div>
+                    <div class="flex items-center gap-x-2 text-sm text-gray-600 mt-1">
+                        <span class="text-dark">উত্তরঃ </span>
+                        <span>{{ $viewData->q_4_ans ?? 'নেই' }}</span>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="mt-4 hidden" id="video-preview">
-            @if ($video)
-                <iframe width="560" height="315" src="{{ $video }}" title="YouTube video player"
-                    frameborder="0"
+            @if ($viewData->videoLink)
+                <iframe width="560" height="315" src="{{ $viewData->videoLink }}"
+                    title="YouTube video player" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             @endif
         </div>
         <div class="mt-3 flex items-center justify-end gap-2 p-4 border-t border-gray-200">
-            @if ($video)
+            @if ($viewData->videoLink)
                 <x-ui.button onclick="toggleclass('#video-preview', ['hidden'])" text=''
                     iconclass='ri-play-circle-line' size='sm' />
             @endif
-            <x-ui.button :route="route('ux.addquestions.mcq', ['id' => $editId])" text='' iconclass='ri-edit-line' size='sm' />
+            <x-ui.button :route="route('ux.addquestions', ['id' => $editId])" text='' iconclass='ri-edit-line' size='sm' />
         </div>
-    </x-ui.model>
+    @endif
+</x-ui.model>
+{{-- add model end --}}
 </div>

@@ -61,4 +61,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    public function created_by()
+    {
+        return $this->belongsTo(McqQuestion::class, 'created_by');
+    }
+    public function updated_by()
+    {
+        return $this->belongsTo(McqQuestion::class, 'updated_by');
+    }
 }

@@ -44,31 +44,16 @@
                     wire:model.live='questiontitle' />
 
                 {{-- প্রশ্ন ১ --}}
-                <x-ui.input target='q_1' label='প্রশ `ক`*' hint='প্রশ্ন' wire:model.live='q_1' />
-                <x-ui.input textarea='true' target='q_1_ans' label='`ক` প্রশ্নের উত্তর' hint='প্রশ্নের উত্তর'
+                <x-ui.input target='q_1' label='প্রশ*' hint='প্রশ্ন' wire:model.live='q_1' />
+                <x-ui.input textarea='true' target='q_1_ans' label='প্রশ্নের উত্তর' hint='প্রশ্নের উত্তর'
                     wire:model.live='q_1_ans' />
-
-                {{-- প্রশ্ন ২ --}}
-                <x-ui.input target='q_2' label='প্রশ `খ`*' hint='প্রশ্ন' wire:model.live='q_2' />
-                <x-ui.input textarea='true' target='q_2_ans' label='`খ` প্রশ্নের উত্তর' hint='প্রশ্নের উত্তর'
-                    wire:model.live='q_2_ans' />
-
-                {{-- প্রশ্ন ৩ --}}
-                <x-ui.input target='q_3' label='প্রশ `গ`*' hint='প্রশ্ন' wire:model.live='q_3' />
-                <x-ui.input textarea='true' target='q_3_ans' label='`গ` প্রশ্নের উত্তর' hint='প্রশ্নের উত্তর'
-                    wire:model.live='q_3_ans' />
-
-                {{-- প্রশ্ন ৪ --}}
-                <x-ui.input target='q_4' label='প্রশ `ঘ`*' hint='প্রশ্ন' wire:model.live='q_4' />
-                <x-ui.input textarea='true' target='q_4_ans' label='`ঘ` প্রশ্নের উত্তর' hint='প্রশ্নের উত্তর'
-                    wire:model.live='q_4_ans' />
             </div>
             {{-- submit button --}}
             <div class="mt-6 flex items-center justify-end gap-3">
                 <x-ui.button text='সেভ করুন' target='store' type='submit' />
 
                 @if ($editId)
-                    <a href='{{ route('ux.allcqquestions') }}' wire:navigate
+                    <a href='{{ route('ux.allquestions.sq') }}' wire:navigate
                         class="text-sm text-gray-500 hover:text-gray-700">
                         <i class="ri-close-line"></i>
                         বাতিল করুন
@@ -92,23 +77,20 @@
         @endif
         @if ($oldImage)
             <div class="mt-4 flex items-center justify-{{ $image_align }}">
-                <img src="{{ asset('storage/' . $oldImage) }}" alt="Image Preview"
-                    class="mt-2 max-h-48 rounded-base" />
+                <img src="{{ asset('storage/' . $oldImage) }}" alt="Image Preview" class="mt-2 max-h-48 rounded-base" />
             </div>
         @endif
         <div class="flex flex-col mt-4">
             <span class="font-bold text-dark">উদ্দীপক:</span>
             <div class="math-container mt-1 text-gray-500">{!! $questiontitle ? $questiontitle : 'প্রশ্ন লিখুন!' !!}</div>
         </div>
-        @for ($i = 0; $i < 4; $i++)
-            <div class="mt-5">
-                <div class="flex items-center gap-x-2">
-                    <span class="font-bold text-dark">প্রশ্ন {{ formatToBangla($i + 1) }}:</span>
-                    <div class="math-container mt-1 text-base text-gray-500">{!! ${'q_' . ($i + 1)} ?: 'প্রশ্ন লিখুন!' !!}</div>
-                </div>
-                <span class="font-bold text-dark">উত্তর {{ formatToBangla($i + 1) }}:</span>
-                <div class="math-container mt-1 text-base text-gray-500">{!! ${'q_' . ($i + 1) . '_ans'} ?: 'প্রশ্নের উত্তর লিখুন!' !!}</div>
+        <div class="mt-5">
+            <div class="flex items-center gap-x-2">
+                <span class="font-bold text-dark">প্রশ্ন:</span>
+                <div class="math-container mt-1 text-base text-gray-500">{!! $q_1 !!}</div>
             </div>
-        @endfor
+            <span class="font-bold text-dark">উত্তর:</span>
+            <div class="math-container mt-1 text-base text-gray-500">{!! $q_1_ans !!}</div>
+        </div>
     </div>
 </div>
