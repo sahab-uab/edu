@@ -184,7 +184,7 @@
 
     {{-- revies --}}
     <section class="py-20 w-full bg-gray-50/80">
-        <div class="safearea flex-col">
+        <div class="safearea flex-col overflow-hidden">
             <div>
                 <h1 class="text-3xl font-bold text-dark text-center">দেখে নিন কি বলছেন!</h1>
                 <p class="text-base text-center font-medium text-gray-500 w-full md:w-[500px] mt-2">শিক্ষক, শিক্ষার্থী ও

@@ -5,6 +5,7 @@ use App\Livewire\App\AllClasses;
 use App\Livewire\App\AllLession;
 use App\Livewire\App\Question\AllQuestions;
 use App\Livewire\App\AllSubjectes;
+use App\Livewire\App\Customize\MenuBuilder;
 use App\Livewire\App\Dashboard;
 use App\Livewire\App\Question\AddSqQuestion;
 use App\Livewire\App\Question\AllCqQuestion;
@@ -42,7 +43,7 @@ Route::get('/logout', Logout::class)->name('logout');
 
 // app
 Route::prefix('/app')->middleware(['authCheck', 'checkrole'])->group(function () {
-    Route::get('/dashboard', Dashboard::class)->name('ux.dashboard');
+    Route::get('/', Dashboard::class)->name('ux.dashboard');
     // for admin
     Route::middleware('roleBase:admin')->group(function(){
         // users
@@ -52,11 +53,6 @@ Route::prefix('/app')->middleware(['authCheck', 'checkrole'])->group(function ()
         Route::get('/all-admin', AllAdmin::class)->name('ux.alladmin');
         Route::get('/all-writer', AllWriter::class)->name('ux.allwriter');
 
-        // single
-        Route::get('/all-classes', AllClasses::class)->name('ux.allclasses');
-        Route::get('/all-subject', AllSubjectes::class)->name('ux.allsubject');
-        Route::get('/all-lession', AllLession::class)->name('ux.alllession');
-
         // for questions
         Route::get('/question-type', QuestionType::class)->name('ux.questions.type');
         Route::get('/all-questions', AllQuestions::class)->name('ux.allquestions');
@@ -65,5 +61,13 @@ Route::prefix('/app')->middleware(['authCheck', 'checkrole'])->group(function ()
         Route::get('/add-questions', AddQuestions::class)->name('ux.addquestions');
         Route::get('/all-sq-questions', AllSqQuestion::class)->name('ux.allquestions.sq');
         Route::get('/add-sq-questions', AddSqQuestion::class)->name('ux.addquestions.sq');
+
+        // customize
+        Route::get('/all-menu', MenuBuilder::class)->name('ux.allmenu');
+
+        // single
+        Route::get('/all-classes', AllClasses::class)->name('ux.allclasses');
+        Route::get('/all-subject', AllSubjectes::class)->name('ux.allsubject');
+        Route::get('/all-lession', AllLession::class)->name('ux.alllession');
     });
 });

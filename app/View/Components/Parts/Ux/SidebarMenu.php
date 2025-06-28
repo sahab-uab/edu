@@ -30,7 +30,7 @@ class SidebarMenu extends Component
                 'icon' => 'ri-user-line',
                 'url' => '',
                 'text' => 'সকল ইউজার',
-                'current' => ['ux.allstudent', 'ux.allteacher', 'ux.add.users','ux.alladmin', 'ux.allwriter'],
+                'current' => ['ux.allstudent', 'ux.allteacher', 'ux.add.users', 'ux.alladmin', 'ux.allwriter'],
                 'sub' => [
                     [
                         'url' => route('ux.alladmin'),
@@ -107,6 +107,19 @@ class SidebarMenu extends Component
                         'url' => route('ux.questions.type'),
                         'text' => 'প্রশ্ন ধরন',
                         'current' => 'ux.questions.type'
+                    ],
+                ]
+            ],
+            [
+                'icon' => 'ri-palette-line',
+                'url' => '',
+                'text' => 'কাস্টমাইজ',
+                'current' => ['ux.allmenu'],
+                'sub' => [
+                    [
+                        'url' => route('ux.allmenu'),
+                        'text' => 'সকল মেনু',
+                        'current' => 'ux.allmenu'
                     ],
                 ]
             ]
