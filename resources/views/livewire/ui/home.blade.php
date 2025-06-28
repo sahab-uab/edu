@@ -211,8 +211,8 @@
     {{-- faqs end --}}
 
     {{-- all model --}}
-    <x-ui.model model='{{ $videoModel }}' bodyClose='true' cardSize='800px' controller='videoModelControll' headerfalse='true'
-        bodyClass='p-0'>
+    <x-ui.model model='{{ $videoModel }}' bodyClose='true' cardSize='800px' controller='videoModelControll'
+        headerfalse='true' bodyClass='p-0'>
         <iframe id="youtube-player" class="w-full aspect-video"
             src="https://www.youtube-nocookie.com/embed/SuoBI_6qmT0?si=5aM0VbUzIRRrwfdt&enablejsapi=1"
             title="YouTube video player"

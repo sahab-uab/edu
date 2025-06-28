@@ -17,20 +17,31 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
 
+            // profile details
             $table->string('profile')->nullable();
             $table->text('address')->nullable();
             $table->string('phone')->nullable();
             $table->enum('gender', ['male', 'female', 'other'])->nullable();
             $table->string('blod_group')->nullable();
-            $table->string('username')->unique()->nullable();
             $table->date('date_of_birth')->nullable();
             $table->text('bio')->nullable();
+            $table->string('petitions')->nullable();
             $table->json('social_links')->nullable();
 
+            // for student
+            $table->string('group_class')->nullable();
+            $table->string('department')->nullable();
+
+            // for techer
+            $table->bigInteger('amount')->default(0);
+            $table->text('techer_by_institute_name')->nullable();
+
+            // settings
             $table->enum('role', ['admin', 'student', 'teacher', 'writer', 'support'])->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamp('email_verified_at')->nullable();
-            $table->timestamp('last_login')->nullable();
+
+            // social login details
             $table->text('google_id')->nullable();
             $table->text('google_token')->nullable();
             $table->text('google_refresh_token')->nullable();

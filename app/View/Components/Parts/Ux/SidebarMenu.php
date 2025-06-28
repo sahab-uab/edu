@@ -30,12 +30,32 @@ class SidebarMenu extends Component
                 'icon' => 'ri-user-line',
                 'url' => '',
                 'text' => 'সকল ইউজার',
-                'current' => ['ux.allstudent', 'ux.addstudent'],
+                'current' => ['ux.allstudent', 'ux.allteacher', 'ux.add.users','ux.alladmin', 'ux.allwriter'],
                 'sub' => [
+                    [
+                        'url' => route('ux.alladmin'),
+                        'text' => 'সকল এডমিন',
+                        'current' => 'ux.alladmin'
+                    ],
+                    [
+                        'url' => route('ux.allwriter'),
+                        'text' => 'সকল এডিটর',
+                        'current' => 'ux.allwriter'
+                    ],
                     [
                         'url' => route('ux.allstudent'),
                         'text' => 'সকল ছাত্র/ছাত্রী',
                         'current' => 'ux.allstudent'
+                    ],
+                    [
+                        'url' => route('ux.allteacher'),
+                        'text' => 'সকল শিক্ষক',
+                        'current' => 'ux.allteacher'
+                    ],
+                    [
+                        'url' => route('ux.add.users'),
+                        'text' => 'ইউজার তৈরি করুন',
+                        'current' => 'ux.add.users'
                     ],
                 ]
             ],
@@ -96,7 +116,8 @@ class SidebarMenu extends Component
         $teacherMenu = [
             [
                 'icon' => 'ri-dashboard-line',
-                'url' => '',
+                'url' => route('ux.dashboard'),
+                'current' => ['ux.dashboard'],
                 'text' => 'ড্যাশবোর্ড'
             ],
         ];

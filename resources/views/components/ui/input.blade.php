@@ -1,7 +1,7 @@
 <div>
     @php
         $class =
-            ($textarea == 'true' ? 'min-h-[100px] p-3' : ($size == 'sm' ? 'h-[30px] text-sm' : 'h-[40px] text-base')) .
+            ($textarea == 'true' ? 'min-h-[80px] p-3' : ($size == 'sm' ? 'h-[30px] text-sm' : 'h-[40px] text-base')) .
             ' w-full duration-300 placeholder:text-gray-500 placeholder:text-sm outline-0 flex items-center px-3 border border-gray-200 rounded-base focus:border-primary' .
             ($type == 'password' ? 'pr-[42px]' : '');
     @endphp

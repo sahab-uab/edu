@@ -6,10 +6,6 @@
                 onclick="toggleclass('#filter', ['hidden'])" />
             <x-ui.input size='sm' wire:model.live='search' type='search' hint='সার্চ করুন' />
         </div>
-        <x-ui.button wire:click='modelhandler' target='modelhandler' text='নতুন ইউজার' iconclass='ri-add-line'
-            iconposition='left' size='xsm' class='hidden md:flex' />
-        <x-ui.button wire:click='modelhandler' class='md:hidden' target='modelhandler' text=''
-            iconclass='ri-add-line' iconposition='left' size='xsm' />
     </div>
     <div class="flex items-center gap-3 mt-4 hidden flex-wrap" id="filter">
         @php
@@ -84,23 +80,28 @@
                                 @endif
                             </td>
                             <td class="px-4 text-base py-3 whitespace-nowrap text-gray-600 font-semibold">
-                                <span class="text-lg font-bold text-red-400">{{ $item->blod_group ?? 'নেই' }}</span>
+                                <span class="text-base font-bold text-red-400">{{ $item->blod_group ?? 'নেই' }}</span>
                             </td>
                             <td class="px-4 text-base py-3 whitespace-nowrap">
-                                <p
-                                    class="{{ $item->status == 'active' ? 'bg-secondary/10 border-secondary/20 text-secondary' : 'bg-red-50 text-red-500 border-red-200' }} border py-1 px-2 text-center rounded-base w-fit  text-sm font-semibold">
-                                    @if ($item->status == 'active')
-                                        সচল
-                                    @else
-                                        অচল
-                                    @endif
-                                </p>
+                                <div class="flex items-center justify-center border border-gray-200 rounded-base w-fit">
+                                    <button wire:click="changestatus({{ $item->id }}, 'active')"
+                                        {{ $item->status == 'active' ? 'disabled' : '' }}
+                                        class="text-[10px] px-2 h-6  {{ $item->status == 'active' ? ' cursor-not-allowed bg-green-200' : 'bg-gray-200' }}">চালু</button>
+
+                                    <button wire:click="changestatus({{ $item->id }}, 'inactive')"
+                                        {{ $item->status == 'inactive' ? 'disabled' : '' }}
+                                        class="text-[10px] px-2 h-6 border-l border-white {{ $item->status == 'inactive' ? 'cursor-not-allowed bg-red-200' : ' bg-gray-200' }}">বন্ধ</button>
+                                </div>
                             </td>
                             <td class="px-4 text-base py-3 whitespace-nowrap text-center">
                                 <div class="flex items-center">
-                                    <button wire:click='edit({{ $item->id }})' class="py-1 px-2">
-                                        <i class="ri-pencil-line text-blue-500"></i>
+                                    <button wire:click='view({{ $item->id }})' class="py-1 px-2">
+                                        <i class="ri-eye-line text-blue-500"></i>
                                     </button>
+                                    <a href="{{ route('ux.add.users', ['id' => $item->id, 'ref' => 'ux.allstudent']) }}"
+                                        class="py-1 px-2">
+                                        <i class="ri-pencil-line text-blue-500"></i>
+                                    </a>
                                     <button wire:confirm="আপনি কি নিশ্চিত যে আপনি এই ছাত্র/ছত্রীটিকে মুছে ফেলতে চান?"
                                         wire:click='delete({{ $item->id }})' class="py-1 px-2">
                                         <i class="ri-delete-bin-line text-red-500"></i>
@@ -115,8 +116,6 @@
             <div class="w-full flex flex-col items-center justify-center p-5 rounded-base border border-gray-100 mt-4">
                 <i class="ri-emotion-sad-line text-gray-500 text-3xl"></i>
                 <p class="text-base font-semibold text-gray-500 mt-2">কোন ছাত্র/ছাত্রী পাওয়া যায়নি!</p>
-                <x-ui.button wire:click='modelhandler' target='modelhandler' text='নতুন ইউজার' iconclass='ri-add-line'
-                    iconposition='left' size='xsm' class='mt-3' />
             </div>
         @endif
         <div class="mt-6 flex items-center justify-end">
@@ -125,65 +124,61 @@
     </div>
 
     {{-- add model --}}
-    <x-ui.model model='{{ $model }}' modelTitle='ছাত্র/ছত্রী তথ্য যোগ করুন' cardSize='70%'
-        controller='modelhandler'>
-        <form wire:submit.prevent="studentAdd">
-            <div class="w-full flex flex-col gap-4">
-                <div>
-                    <label for='profile'
-                        class="w-[135px] cursor-pointer h-[150px] border flex items-center justify-center border-gray-200 border-dotted bg-gray-50 rounded-base">
-                        @if ($profile)
-                            <img src="{{ $profile->temporaryUrl() }}" class="w-full h-full object-cover rounded-base">
-                        @elseif ($profileOld)
-                            <img src="{{ asset('storage/' . $profileOld) }}"
-                                class="w-full h-full object-cover rounded-base">
-                        @else
-                            <i class="ri-upload-line text-lg text-gray-500"></i>
-                        @endif
-                        <input type="file" id="profile" class="hidden" wire:model='profile' accept="image/*">
-                    </label>
-                    <small class='text-[10px] text-gray-500 text-center mt-1'>সাইজ 135px * 150px</small>
-                    @error('profile')
-                        <p class="text-red-500 text-sm">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-                    <x-ui.input target='name' wire:model='name' label='ছত্র/ছত্রীর নাম*' hint='নাম' />
-                    <x-ui.input target='email' wire:model='email' label='ইমেইল ঠিকানা*' hint='ইমেইল'
-                        type='email' />
-                    <x-ui.input target='password' wire:model='password' label='পাসওয়ার্ড*' hint='পাসওয়ার্ড'
-                        type='password' />
-                </div>
-                <div class='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-                    @php
-                        $gender = [
-                            'male' => 'পুরুষ',
-                            'female' => 'মহিলা',
-                            'other' => 'অন্যান্য',
-                        ];
-                    @endphp
-                    <x-ui.select target='f_gender' wire:model='f_gender' label='লিঙ্গ' :dataoption="$gender" />
-                    <x-ui.input target='bloodgroup' wire:model='bloodgroup' label='রক্তের গ্রুপ'
-                        hint='রক্তের গ্রুপ' />
-                    <x-ui.input target='date_of_birth' wire:model='date_of_birth' label='জন্ম তারিখ'
-                        hint='জন্ম তারিখ' type='date' />
-                    <x-ui.input target='bio' wire:model='bio' label='জীবনবৃত্তান্ত' hint='জীবনবৃত্তান্ত' />
-                </div>
-                <div class='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                    @php
-                        $data = [
-                            'active' => 'সচল',
-                            'inactive' => 'অচল',
-                        ];
-                    @endphp
-                    <x-ui.input target='phone' wire:model='phone' label='ফোন নম্বর' hint='ফোন নম্বর' />
-                    <x-ui.select target='status' wire:model='status' label='অবস্থা' :dataoption="$data" />
-                </div>
-                <x-ui.input target='address' wire:model='address' label='ঠিকানা' textarea='true' />
-
-                <x-ui.button target='studentAdd' type='submit' text='সেভ করুন' class="justify-center w-fit" />
+    <x-ui.model model='{{ $model }}' modelTitle='ছাত্র/ছত্রী তথ্য' cardSize='400px' controller='modelhandler'>
+        @if ($viewData)
+            <div class="flex flex-col items-center">
+                <img class="w-[100px] h-[100px] rounded-full overflow-hidden flex items-center justify-center border-2 border-gray-200 object-cover"
+                    src="{{ $viewData->profile ? asset('storage/' . $viewData->profile) : get_media() }}">
+                <p class="text-sm text-gray-500 mt-2">{{ $viewData->bio ?? '' }}</p>
+                <p class="text-base text-gray-500 mt-1">ছাত্র/ছাত্রী</p>
             </div>
-        </form>
+            <div class="mt-3 flex flex-col">
+                @php
+                    $userInfo = [
+                        'name' => 'নাম',
+                        'email' => 'ইমেইল',
+                        'phone' => 'ফোন নাম্বার',
+                        'gender' => 'লিঙ্গ',
+                        'blod_group' => 'রক্তের গ্রুপ',
+                        'date_of_birth' => 'জন্ম তারিখ',
+                        'petitions' => 'পেশা',
+                        'group_class' => 'ক্লাস',
+                        'department' => 'ডিপার্টমেন্ট',
+                        'status' => 'অবস্থা',
+                    ];
+                @endphp
+                @if ($userInfo)
+                    @foreach ($userInfo as $key => $label)
+                        <div
+                            class="flex items-center border p-2 border-gray-300 rounded-base border-b-0 last:border-b text-sm">
+                            <span class="min-w-[20%] text-right pr-2 font-semibold">{{ $label }}ঃ</span>
+                            <span>
+                                @if ($key == 'gender')
+                                    @if ($viewData->gender == 'male')
+                                        পুরুষ
+                                    @elseif ($viewData->gender == 'female')
+                                        মহিলা
+                                    @elseif ($viewData->gender == 'other')
+                                        অন্যান্য
+                                    @else
+                                        অজানা
+                                    @endif
+                                @elseif ($key == 'status')
+                                    @if ($viewData->status == 'active')
+                                        সচল
+                                    @elseif ($viewData->status == 'inactive')
+                                        অচল
+                                    @else
+                                        অজানা
+                                    @endif
+                                @else
+                                    {{ $viewData->$key ? $viewData->$key : 'নেই' }}
+                                @endif
+                            </span>
+                        </div>
+                    @endforeach
+                @endif
+            </div>
+        @endif
     </x-ui.model>
 </div>

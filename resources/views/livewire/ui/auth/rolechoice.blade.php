@@ -19,7 +19,7 @@
                         <label class="cursor-pointer">
                             <input wire:change="setrole('student')" type="radio" name="option" class="hidden peer">
                             <div
-                                class="p-4 rounded-base border border-gray-200 peer-checked:bg-gray-50/50 flex flex-col items-center justify-center gap-1 peer-checked:border-primary duration-300">
+                                class="p-4 hover:border-primary rounded-base border border-gray-200 peer-checked:bg-primary/5 flex flex-col items-center justify-center gap-1 peer-checked:border-primary duration-300">
                                 <i class="ri-graduation-cap-line text-3xl text-gray-500"></i>
                                 <span class="text-gray-500 font-semibold">ছাত্র/ছাত্রী</span>
                             </div>
@@ -28,7 +28,7 @@
                         <label class="cursor-pointer">
                             <input wire:change="setrole('teacher')" type="radio" name="option" class="hidden peer">
                             <div
-                                class="p-4 rounded-base border border-gray-200 peer-checked:bg-gray-50/50 flex flex-col items-center justify-center gap-1 peer-checked:border-primary duration-300">
+                                class="p-4 hover:border-primary rounded-base border border-gray-200 peer-checked:bg-primary/5 flex flex-col items-center justify-center gap-1 peer-checked:border-primary duration-300">
                                 <i class="ri-pencil-ruler-line text-3xl text-gray-500"></i>
                                 <span class="text-gray-500 font-semibold">শিক্ষক</span>
                             </div>

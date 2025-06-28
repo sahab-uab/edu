@@ -6,7 +6,7 @@
 @source '../**/*.js';
 
 @theme {
-    --font-base: "Noto Serif Bengali", serif;
+    --font-base: "Noto Serif Bengali", "Roboto", sans-serif;
 
     --color-primary: #ff551b;
     --color-secondary: #51be92;
@@ -64,6 +64,38 @@
         @apply cursor-pointer;
     }
 }
+
+/* slider */
+@keyframes leftSlider {
+    form {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+@keyframes rightSlider {
+    form {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+.left-slider {
+    animation: 200s leftSlider infinite linear;
+}
+.right-slider {
+    animation: 200s rightSlider infinite linear;
+}
+.left-slider:hover {
+    animation-play-state: paused;
+}
+.right-slider:hover {
+    animation-play-state: paused;
+}
+
+/* for math formateing */
 .math-container {
     display: inline;
     line-height: normal;
