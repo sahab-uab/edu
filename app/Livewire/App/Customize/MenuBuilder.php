@@ -64,7 +64,7 @@ class MenuBuilder extends Component
             $this->loadMenus();
             $this->reset(['menu_name', 'menu_link', 'editId']);
         } else {
-           session()->flash('error', 'কিছু একটা সমাস্যা হয়েছে আবার চেস্টা করুন।');
+           session()->flash('error', $this->editId ? 'মেনু পরিবর্তন সফল হয়েছে।' : 'কিছু একটা সমাস্যা হয়েছে আবার চেস্টা করুন।');
            return;
         }
         

@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Parts\Ui;
 
+use App\Models\Menu as ModelsMenu;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -11,18 +12,19 @@ class Menu extends Component
     public $menu = [];
     public function __construct()
     {
-        $this->menu = [
-            'হোম' => route('ux.dashboard'),
-            '১-১৩ ক্লাস' => '/',
-            'আরো দেখুন' => [
-                'যোগাযোগ' => '/',
-                'আমাদর সম্পর্কে' => '/'
-            ],
-            'দেখুন' => [
-                'যোগাযোগ' => '/',
-                'আমাদর সম্পর্কে' => '/'
-            ]
-        ];
+        $menuList = ModelsMenu::with('children')->whereNull('parent_id')->orderBy('order')->get();
+        $this->menu = [];
+        foreach ($menuList as $item) {
+            if ($item->children->isNotEmpty()) {
+                $children = [];
+                foreach ($item->children as $child) {
+                    $children[$child->title] = $child->url ?? '#';
+                }
+                $this->menu[$item->title] = $children;
+            } else {
+                $this->menu[$item->title] = $item->url ?? '#';
+            }
+        }
     }
 
     /**

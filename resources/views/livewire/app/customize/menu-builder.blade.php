@@ -38,10 +38,11 @@
                                             <small class="text-gray-500">({{ $menu->url }})</small>
                                         </div>
                                         <div class="flex items-center gap-1">
-                                            <button wire:click='edit({{$menu->id}})'
+                                            <button wire:click='edit({{ $menu->id }})'
                                                 class="w-[20px] h-[20px] flex items-center justify-center hover:bg-gray-100 rounded-base text-base text-gray-500 duration-300 hover:text-dark"><i
                                                     class="ri-pencil-line"></i></button>
-                                            <button wire:click="delete({{$menu->id}})" wire:confirm="আপনি কি নিশ্চিতভাবে এই মেনুটি মুছে ফেলতে চান? সাব-মেনু থাকলে সেগুলোও মুছে যাবে।"
+                                            <button wire:click="delete({{ $menu->id }})"
+                                                wire:confirm="আপনি কি নিশ্চিতভাবে এই মেনুটি মুছে ফেলতে চান? সাব-মেনু থাকলে সেগুলোও মুছে যাবে।"
                                                 class="w-[20px] h-[20px] flex items-center justify-center hover:bg-gray-100 rounded-base text-base text-gray-500 duration-300 hover:text-red-500">
                                                 <i class="ri-delete-bin-line"></i>
                                             </button>
@@ -62,10 +63,11 @@
                                                             <small class="text-gray-500">({{ $child->url }})</small>
                                                         </div>
                                                         <div class="flex items-center gap-1">
-                                                            <button wire:click='edit({{$child->id}})'
+                                                            <button wire:click='edit({{ $child->id }})'
                                                                 class="w-[20px] h-[20px] flex items-center justify-center hover:bg-gray-100 rounded-base text-base text-gray-500 duration-300 hover:text-dark"><i
                                                                     class="ri-pencil-line"></i></button>
-                                                            <button wire:click="delete({{$child->id}})" wire:confirm="আপনি কি নিশ্চিতভাবে এই সাব-মেনুটি মুছে ফেলতে চান?"
+                                                            <button wire:click="delete({{ $child->id }})"
+                                                                wire:confirm="আপনি কি নিশ্চিতভাবে এই সাব-মেনুটি মুছে ফেলতে চান?"
                                                                 class="w-[20px] h-[20px] flex items-center justify-center hover:bg-gray-100 rounded-base text-base text-gray-500 duration-300 hover:text-red-500"><i
                                                                     class="ri-delete-bin-line"></i></button>
                                                         </div>
@@ -86,9 +88,8 @@
 @push('scripts')
     <!-- SortableJS -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-
     <script>
-        document.addEventListener('alpine:init', () => {
+        function dragEnable() {
             Alpine.data('menuSortable', () => ({
                 init() {
                     const mainList = document.getElementById('menu-nested');
@@ -129,6 +130,15 @@
                     });
                 }
             }))
+        }
+        document.addEventListener('alpine:init', () => {
+            dragEnable();
+        });
+        document.addEventListener('livewire:init', () => {
+            dragEnable();
+        });
+        document.addEventListener('livewire:navigated', () => {
+            dragEnable();
         });
     </script>
 @endpush
