@@ -122,6 +122,19 @@ class SidebarMenu extends Component
                         'current' => 'ux.allmenu'
                     ],
                 ]
+            ],
+            [
+                'icon' => 'ri-settings-2-line',
+                'url' => '',
+                'text' => 'সেটিংস',
+                'current' => ['ux.smtp'],
+                'sub' => [
+                    [
+                        'url' => route('ux.smtp'),
+                        'text' => 'SMTP',
+                        'current' => 'ux.smtp'
+                    ],
+                ]
             ]
         ];
 

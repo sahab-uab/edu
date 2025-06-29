@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('lavel');
             $table->text('video_link')->nullable();
             $table->text('image_link')->nullable();
-            $table->text('image_positon')->default('left');
+            $table->text('image_positon')->nullable();
             $table->text('title');
             $table->json('normal_questions')->nullable();
             $table->json('advance_questions')->nullable();

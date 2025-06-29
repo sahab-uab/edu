@@ -13,7 +13,9 @@
                     wire:model='email' />
                 <x-ui.input label='ইউজার পাসওয়ার্ড*' hint='পাসওয়ার্ড প্রদান করুন' target='password'
                     wire:model='password' />
-
+                @if ($userrole == 'student')
+                    <x-ui.select label='ক্লাস' :dataoption="$classList" wire:model='groupclass' target='groupclass' />
+                @endif
                 {{-- role --}}
                 <div>
                     <h2 class='text-base text-dark'>ইউজার ধরন*</h2>
@@ -108,14 +110,10 @@
             </div>
 
             <div class="mt-3 flex flex-col gap-3">
-                <x-ui.input label='ফোন নাম্বার' hint='ফোন নাম্বার' wire:model='phone' target='phone' />
-                @if ($userrole == 'student')
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <x-ui.select label='ক্লাস' :dataoption="$classList" wire:model='groupclass' target='groupclass' />
-                        <x-ui.input label='ডিপার্টমেন্ট' hint='ডিপার্টমেন্ট' wire:model='department'
-                            target='department' />
-                    </div>
-                @endif
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <x-ui.input label='ফোন নাম্বার' hint='ফোন নাম্বার' wire:model='phone' target='phone' />
+                    <x-ui.input label='ডিপার্টমেন্ট' hint='ডিপার্টমেন্ট' wire:model='department' target='department' />
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <x-ui.select label='লিঙ্গ' :dataoption="$genderOptions" wire:model='gender' target='gender' />
                     <x-ui.select label='রক্তের গ্রুপ' :dataoption="$bloodGroupOptions" wire:model='blood_group'

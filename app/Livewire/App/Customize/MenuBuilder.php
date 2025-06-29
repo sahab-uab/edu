@@ -42,14 +42,17 @@ class MenuBuilder extends Component
     // create or update
     public $menu_name = '';
     public $menu_link = '';
+    public $menu_target = '_self';
     public $editId = '';
     public function store()
     {
         $this->validate([
             'menu_name' => 'required|min:1',
-            'menu_link' => 'required|url'
+            'menu_link' => 'required|url',
+            'menu_target'=>'required'
         ], [
             'menu_name.required' => 'মেনুর নাম প্রদান করুন।',
+            'menu_target.required' => 'মেনুর পেজ প্রদান করুন।',
             'menu_name.min' => 'মেনুর নাম সর্বনিম্ন ১ সংখ্যার হতে হবে।',
             'menu_link' => 'মেনুর ্লিংক প্রদান করুন।',
             'menu_link.url' => 'এখানে সঠিক লিংক প্রদান করুন।'
@@ -58,11 +61,12 @@ class MenuBuilder extends Component
         $q = $this->editId ? Menu::find($this->editId) : new Menu();
         $q->title = $this->menu_name;
         $q->url = $this->menu_link;
+        $q->target = $this->menu_target;
         $store = $q->save();
         if ($store) {
             session()->flash('success', 'নতুন মেনু তৈরি সফল হয়েছে।');
             $this->loadMenus();
-            $this->reset(['menu_name', 'menu_link', 'editId']);
+            $this->reset(['menu_name', 'menu_link', 'editId', 'menu_target']);
         } else {
            session()->flash('error', $this->editId ? 'মেনু পরিবর্তন সফল হয়েছে।' : 'কিছু একটা সমাস্যা হয়েছে আবার চেস্টা করুন।');
            return;
@@ -91,6 +95,7 @@ class MenuBuilder extends Component
         }
         $this->menu_name = $editItem->title;
         $this->menu_link = $editItem->url;
+        $this->menu_target = $editItem->target;
         $this->editId = $editItem->id;
     }
 

@@ -62,7 +62,7 @@ class AddUsers extends Component
     // Livewire lifecycle hook to initialize data
     public function mount()
     {
-        $this->classList = GroupeClass::pluck('name', 'name')->toArray();
+        $this->classList = GroupeClass::pluck('name', 'id')->toArray();
         if ($this->editId) {
             $data = User::find($this->editId);
             if (!$data) {
@@ -104,7 +104,7 @@ class AddUsers extends Component
             'bio' => 'nullable|string',
             'address' => 'nullable|string',
             'techer_by_institute_name' => 'nullable|string',
-            'groupclass' => 'nullable|string',
+            'groupclass' => $this->userrole == 'student' ? 'required' : 'nullable' . '|string',
             'department' => 'nullable|string',
         ], [
             'userrole.required' => 'রোল নির্বাচন করুন।',
@@ -127,6 +127,7 @@ class AddUsers extends Component
             'image.max' => 'ছবির আকার সর্বোচ্চ ২ এমবি হতে পারবে।',
             'gender.in' => 'লিঙ্গ অবশ্যই পুরুষ, মহিলা অথবা অন্যান্য হতে হবে।',
             'blood_group.in' => 'রক্তের গ্রুপ সঠিকভাবে নির্বাচন করুন।',
+            'groupclass.required' => 'ক্লাস নির্বাচন করুন।',
             'date_of_brith.date' => 'জন্ম তারিখ সঠিকভাবে দিন।',
         ]);
 
@@ -134,6 +135,7 @@ class AddUsers extends Component
         $q->name = $this->name;
         $q->email = $this->email;
         $q->password = $this->editId ? $this->oldPassword : bcrypt($this->password);
+        $q->role = $this->userrole;
 
         if ($this->image) {
             if ($this->oldImage && Storage::disk('public')->exists($this->oldImage)) {
@@ -143,17 +145,30 @@ class AddUsers extends Component
             $path = $this->image->storeAs('media', $uniqueName, 'public');
             $q->profile = $path;
         }
-        $q->address = $this->address;
-        $q->phone = $this->phone;
-        $q->gender = $this->gender;
-        $q->blod_group = $this->blood_group;
-        $q->date_of_birth = $this->date_of_brith;
-        $q->bio = $this->bio;
-        $q->petitions = $this->petitions;
-        $q->group_class = $this->groupclass;
-        $q->department = $this->department;
-        $q->techer_by_institute_name = $this->techer_by_institute_name;
-        $q->role = $this->userrole;
+        $fields = [
+            'address' => 'address',
+            'phone' => 'phone',
+            'gender' => 'gender',
+            'blood_group' => 'blod_group',
+            'date_of_brith' => 'date_of_birth',
+            'bio' => 'bio',
+            'petitions' => 'petitions',
+            'groupclass' => 'group_class',
+            'department' => 'department',
+            'techer_by_institute_name' => 'techer_by_institute_name'
+        ];
+        foreach ($fields as $input => $field) {
+            $value = $this->$input;
+
+            // Fix ENUM and strict data like gender
+            if ($input === 'gender') {
+                if (in_array($value, ['male', 'female'])) {
+                    $q->$field = $value;
+                }
+            } elseif (!is_null($value) && $value !== '') {
+                $q->$field = $value;
+            }
+        }
         $store = $q->save();
         if ($store) {
             session()->flash('success', $this->editId ? 'সফল ভাবে পরিবর্তন হয়েছে।' : 'সফল ভাবে তৈরি হয়েছে।');

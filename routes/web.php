@@ -12,6 +12,7 @@ use App\Livewire\App\Question\AllCqQuestion;
 use App\Livewire\App\Question\AllSqQuestion;
 use App\Livewire\App\Question\McqAdd;
 use App\Livewire\App\Question\QuestionType;
+use App\Livewire\App\Setting\Smtp;
 use App\Livewire\App\Users\AddUsers;
 use App\Livewire\App\Users\AllAdmin;
 use App\Livewire\App\Users\AllStudent;
@@ -26,26 +27,34 @@ use App\Livewire\Ui\Home;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Route;
 
-// basic
+// ui
 Route::get('/', Home::class)->name('ui.home');
 
-// auth
+// social auth
 Route::get('/auth/redirect', function () {
     return Socialite::driver('google')->redirect();
 })->name('google.redirect');
+Route::get('/auth/google/callback', Google::class);
+
+// site auth
 Route::middleware(['guestCheck'])->group(function () {
     Route::get('/login', Login::class)->name('ui.login');
     Route::get('/signup', Register::class)->name('ui.signup');
 });
-Route::get('/auth/google/callback', Google::class);
-Route::get('/choicerole', Rolechoice::class)->middleware('authCheck')->name('ui.setrole');
+
+// role select
+Route::middleware(['authCheck'])->group(function () {
+    Route::get('/choicerole', Rolechoice::class)->name('ui.setrole');
+});
+
+// logoout
 Route::get('/logout', Logout::class)->name('logout');
 
 // app
 Route::prefix('/app')->middleware(['authCheck', 'checkrole'])->group(function () {
     Route::get('/', Dashboard::class)->name('ux.dashboard');
     // for admin
-    Route::middleware('roleBase:admin')->group(function(){
+    Route::middleware('roleBase:admin')->group(function () {
         // users
         Route::get('/add-users', AddUsers::class)->name('ux.add.users');
         Route::get('/all-student', AllStudent::class)->name('ux.allstudent');
@@ -64,6 +73,9 @@ Route::prefix('/app')->middleware(['authCheck', 'checkrole'])->group(function ()
 
         // customize
         Route::get('/all-menu', MenuBuilder::class)->name('ux.allmenu');
+
+        // settings
+        Route::get('/smtp', Smtp::class)->name('ux.smtp');
 
         // single
         Route::get('/all-classes', AllClasses::class)->name('ux.allclasses');

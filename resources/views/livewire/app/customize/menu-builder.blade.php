@@ -6,8 +6,15 @@
         </div>
         <form wire:submit.prevent="store">
             <div class="flex flex-col gap-3">
+                @php
+                    $dataoptions = [
+                        '_self' => 'একই পেজে',
+                        '_blank' => 'নতুন পেজে',
+                    ];
+                @endphp
                 <x-ui.input label='মেনু নাম*' hint='মেনু নাম' wire:model='menu_name' target='menu_name' />
                 <x-ui.input label='মেনু লিংক*' hint='মেনু লিংক' wire:model='menu_link' target='menu_link' />
+                <x-ui.select label='পেজ*' :dataoption="$dataoptions" wire:model="menu_target" target="menu_target" />
                 <x-ui.button target='store' text='সেভ করুন' type='submit' class="justify-center" />
             </div>
         </form>
@@ -136,9 +143,9 @@
         });
         document.addEventListener('livewire:init', () => {
             dragEnable();
-        });
-        document.addEventListener('livewire:navigated', () => {
-            dragEnable();
+            document.addEventListener('livewire:navigated', () => {
+                dragEnable();
+            });
         });
     </script>
 @endpush

@@ -16,15 +16,26 @@ class Menu extends Component
         $this->menu = [];
         foreach ($menuList as $item) {
             if ($item->children->isNotEmpty()) {
-                $children = [];
-                foreach ($item->children as $child) {
-                    $children[$child->title] = $child->url ?? '#';
-                }
-                $this->menu[$item->title] = $children;
+            $children = [];
+            foreach ($item->children as $child) {
+                $children[$child->title] = [
+                'url' => $child->url ?? '#',
+                'target' => $child->target ?? '_self',
+                ];
+            }
+            $this->menu[$item->title] = [
+                'children' => $children,
+                'url' => $item->url ?? '#',
+                'target' => $item->target ?? '_self',
+            ];
             } else {
-                $this->menu[$item->title] = $item->url ?? '#';
+            $this->menu[$item->title] = [
+                'url' => $item->url ?? '#',
+                'target' => $item->target ?? '_self',
+            ];
             }
         }
+        // dd($this->menu);
     }
 
     /**

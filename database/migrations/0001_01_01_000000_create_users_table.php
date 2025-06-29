@@ -29,7 +29,7 @@ return new class extends Migration
             $table->json('social_links')->nullable();
 
             // for student
-            $table->string('group_class')->nullable();
+            $table->unsignedBigInteger('group_class')->nullable();
             $table->string('department')->nullable();
 
             // for techer

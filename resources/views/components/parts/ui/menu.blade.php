@@ -3,7 +3,7 @@
     {{-- for desktop --}}
     <ul class="hidden items-center gap-x-5 text-white lg:flex">
         @foreach ($menu as $label => $link)
-            @if (is_array($link))
+            @if (is_array($link) && isset($link['children']) && $link['children'])
                 <!-- Dropdown menu -->
                 <li class="relative group">
                     <div class='flex items-center gap-x-1'>
@@ -14,12 +14,13 @@
                     </div>
                     <ul
                         class="absolute left-0 hidden py-2 bg-white rounded-base overflow-hidden group-hover:block min-w-[150px] shadow-lg z-10">
-                        @foreach ($link as $sublabel => $sublink)
+                        @foreach ($link['children'] as $sublabel => $sublink)
                             @php
-                                $subDelay = ($loop->index + 1) * 100; // submenu delay starts at 100ms, 200ms, ...
+                                $subDelay = ($loop->index + 1) * 100;
                             @endphp
                             <li class="h-full">
-                                <a href="{{ $sublink }}" wire:navigate
+                                <a href="{{ $sublink['url'] }}" target="{{ $sublink['target'] }}"
+                                    @if ($sublink['target'] == '_self') wire:navigate @endif
                                     class="block px-4 py-1 text-dark hover:text-primary">
                                     {{ $sublabel }}
                                 </a>
@@ -30,7 +31,8 @@
             @else
                 <!-- Single link -->
                 <li>
-                    <a href="{{ $link }}" wire:navigate
+                    <a href="{{ $link['url'] }}" target="{{ $link['target'] }}"
+                        @if ($link['target'] == '_self') wire:navigate @endif
                         class="text-base font-normal duration-300 hover:text-primary">
                         {{ $label }}
                     </a>
@@ -53,7 +55,7 @@
         <div class="overflow-y-auto">
             <ul>
                 @foreach ($menu as $label => $link)
-                    @if (is_array($link))
+                    @if (is_array($link) && isset($link['children']) && $link['children'])
                         <!-- Dropdown menu -->
                         <li class="relative group">
                             <div class="border-b border-gray-100 py-3 px-4 flex items-center justify-between">
@@ -64,12 +66,13 @@
                                 <i class="ri-arrow-down-s-fill"></i>
                             </div>
                             <ul class="bg-gray-100 p-4 hidden">
-                                @foreach ($link as $sublabel => $sublink)
+                                @foreach ($link['children'] as $sublabel => $sublink)
                                     @php
-                                        $subDelay = ($loop->index + 1) * 100; // submenu delay starts at 100ms, 200ms, ...
+                                        $subDelay = ($loop->index + 1) * 100;
                                     @endphp
                                     <li class="h-full">
-                                        <a href="{{ $sublink }}" wire:navigate
+                                        <a href="{{ $sublink['url'] }}" target="{{ $sublink['target'] }}"
+                                            @if ($sublink['target'] == '_self') wire:navigate @endif
                                             class="block px-4 py-1 text-dark hover:text-primary">
                                             {{ $sublabel }}
                                         </a>
@@ -80,7 +83,8 @@
                     @else
                         <!-- Single link -->
                         <li class="border-b border-gray-100 py-3 px-4">
-                            <a href="{{ $link }}" wire:navigate
+                            <a href="{{ $link['url'] }}" target="{{ $link['target'] }}"
+                                @if ($link['target'] == '_self') wire:navigate @endif
                                 class="text-base font-normal duration-300 hover:text-primary">
                                 {{ $label }}
                             </a>
@@ -91,7 +95,7 @@
         </div>
         <li class="absolute bottom-0 left-0 w-full p-4 bg-white">
             <div>
-                <x-parts.social-link/>
+                <x-parts.social-link />
                 <ul class="flex items-center gap-3 flex-wrap mt-3">
                     <li><a href=""
                             class="text-sm text-primary duration-300 hover:underline hover:text-secondary">হোম</a></li>

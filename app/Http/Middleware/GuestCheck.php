@@ -17,7 +17,7 @@ class GuestCheck
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check()) {
-            return to_route('ux.dashboard');
+            return to_route('ui.home');
         }
         return $next($request);
     }
