@@ -29,7 +29,7 @@
                     <x-ui.input wire:model='email' target='email' label='ইমেইল' type='email' class='w-full'
                         hint='ইমেইল দিন' />
                     <div class="flex flex-col">
-                        <a href=""
+                        <a href="{{ route('ui.forgate') }}" wire:navigate
                             class="text-sm -mb-4.5 z-[10] text-dark text-right font-semibold duration-300 hover:text-primary">পাসওয়ার্ড
                             ভুলে গেছেন?</a>
                         <x-ui.input wire:model='password' target='password' label='পাসওয়ার্ড' type='password'

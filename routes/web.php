@@ -18,10 +18,12 @@ use App\Livewire\App\Users\AllAdmin;
 use App\Livewire\App\Users\AllStudent;
 use App\Livewire\App\Users\AllTecher;
 use App\Livewire\App\Users\AllWriter;
+use App\Livewire\Ui\Auth\Forget;
 use App\Livewire\Ui\Auth\Google;
 use App\Livewire\Ui\Auth\Login;
 use App\Livewire\Ui\Auth\Logout;
 use App\Livewire\Ui\Auth\Register;
+use App\Livewire\Ui\Auth\ResetPass;
 use App\Livewire\Ui\Auth\Rolechoice;
 use App\Livewire\Ui\Home;
 use Laravel\Socialite\Facades\Socialite;
@@ -40,6 +42,8 @@ Route::get('/auth/google/callback', Google::class);
 Route::middleware(['guestCheck'])->group(function () {
     Route::get('/login', Login::class)->name('ui.login');
     Route::get('/signup', Register::class)->name('ui.signup');
+    Route::get('/forgat-password', Forget::class)->name('ui.forgate');
+    Route::get('/reset-password/{token}', ResetPass::class)->name('ui.password.reset');
 });
 
 // role select
