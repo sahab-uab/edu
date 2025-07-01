@@ -27,13 +27,13 @@ return new class extends Migration
             $table->text('bio')->nullable();
             $table->string('petitions')->nullable();
             $table->json('social_links')->nullable();
+            $table->double('amount')->default(0);
 
             // for student
             $table->unsignedBigInteger('group_class')->nullable();
             $table->string('department')->nullable();
 
             // for techer
-            $table->bigInteger('amount')->default(0);
             $table->text('techer_by_institute_name')->nullable();
 
             // settings

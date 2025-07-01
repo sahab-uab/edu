@@ -31,7 +31,8 @@
                             <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">
                                 নং
                             </th>
-                            <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">ধরনের নাম
+                            <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">
+                                ধরনের নাম
                             </th>
                             <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">
                                 অ্যাকশন
@@ -52,10 +53,12 @@
                                         <button wire:click='edit({{ $item->id }})' class="py-1 px-2">
                                             <i class="ri-pencil-line text-blue-500"></i>
                                         </button>
-                                        <button wire:confirm="আপনি কি নিশ্চিত যে আপনি এই ধরনটি মুছে ফেলতে চান?"
-                                            wire:click='delete({{ $item->id }})' class="py-1 px-2">
-                                            <i class="ri-delete-bin-line text-red-500"></i>
-                                        </button>
+                                        @if (Auth::user()->role == 'admin')
+                                            <button wire:confirm="আপনি কি নিশ্চিত যে আপনি এই ধরনটি মুছে ফেলতে চান?"
+                                                wire:click='delete({{ $item->id }})' class="py-1 px-2">
+                                                <i class="ri-delete-bin-line text-red-500"></i>
+                                            </button>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>

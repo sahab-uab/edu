@@ -2,6 +2,7 @@
 
 namespace App\Livewire\App\Users;
 
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
@@ -21,6 +22,11 @@ class AllTecher extends Component
     public function modelhandler()
     {
         $this->model = $this->model == 'true' ? 'false' : 'true';
+    }
+    public $Moneymodel = 'false';
+    public function Moneymodelhandler()
+    {
+        $this->Moneymodel = $this->Moneymodel == 'true' ? 'false' : 'true';
     }
 
     // view
@@ -69,6 +75,56 @@ class AllTecher extends Component
             return;
         } else {
             session()->flash('success', 'আবস্থা পরিবর্তন সফল হয়েছে।');
+        }
+    }
+
+    // money add model
+    public $moneyModeldata = null;
+    public $deposit_amount = 0;
+    public function moneyAddModel($id)
+    {
+        $user = User::find($id);
+        if ($user) {
+            $this->moneyModeldata = $user;
+            $this->Moneymodel = 'true';
+        } else {
+            session()->flash('error', 'কিছু একটা সমাস্যা হয়ছে আবার চেষ্টা করুন।');
+            return;
+        }
+    }
+    public function depositNow()
+    {
+        if (empty($this->deposit_amount)) {
+            $this->addError('deposit_amount', 'টাকার পরিমাণ অবশ্যই দিতে হবে।');
+            return;
+        }
+        if (!is_numeric($this->deposit_amount) || $this->deposit_amount <= 0) {
+            $this->addError('deposit_amount', 'টাকার পরিমাণ সঠিকভাবে দিন (শুধুমাত্র ধনাত্মক সংখ্যা)।');
+            return;
+        }
+
+        $newBalance = (float) $this->moneyModeldata->amount + (float) $this->deposit_amount;
+        $q = User::find($this->moneyModeldata->id);
+        if (!$q) {
+            $this->addError('deposit_amount', 'কিছু একটা সমাস্যা হয়ছে আবার চেষ্টা করুন।');
+            return;
+        }
+        $q->amount = $newBalance;
+        $store = $q->save();
+        if (!$store) {
+            $this->addError('deposit_amount', 'কিছু একটা সমাস্যা হয়ছে আবার চেষ্টা করুন।');
+            return;
+        }else{
+            $recod = new Transaction();
+            $recod->user_id = $this->moneyModeldata->id;
+            $recod->amount = $this->deposit_amount;
+            $recod->payment_gatway = 'Admin';
+            $recod->status = 'success';
+            $recod->payment_type = 'add';
+            $recod->save();
+            session()->flash('success', 'সফল ভাবে শিক্ষক/শিক্ষিকার জন্য ডিপোজিট হয়ছে।');
+            $this->reset(['moneyModeldata', 'deposit_amount']);
+            $this->Moneymodel = 'false';
         }
     }
 

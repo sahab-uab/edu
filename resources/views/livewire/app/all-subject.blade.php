@@ -35,7 +35,8 @@
                             <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">
                                 ক্লাস
                             </th>
-                            <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">বিষয় নাম
+                            <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">
+                                বিষয় নাম
                             </th>
                             <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">
                                 অ্যাকশন
@@ -59,13 +60,16 @@
                                         <button wire:click='edit({{ $item->id }})' class="py-1 px-2">
                                             <i class="ri-pencil-line text-blue-500"></i>
                                         </button>
-                                        <button @click.prevent="
+                                        @if (Auth::user()->role == 'admin')
+                                            <button
+                                                @click.prevent="
                                             if (confirm('আপনি কি নিশ্চিত যে আপনি এই বিষয়টি মুছে ফেলতে চান?\nবিঃদ্রঃ- আপনার এই বিষয়টি এর সাথে সংশ্লিষ্ট সকল তথ্য একেবারে মুছে যাবে।')) {
                                                 $wire.delete({{ $item->id }});
                                             }"
-                                             class="py-1 px-2">
-                                            <i class="ri-delete-bin-line text-red-500"></i>
-                                        </button>
+                                                class="py-1 px-2">
+                                                <i class="ri-delete-bin-line text-red-500"></i>
+                                            </button>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>

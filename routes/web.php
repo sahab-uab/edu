@@ -15,8 +15,13 @@ use App\Livewire\App\Question\AllSqQuestion;
 use App\Livewire\App\Question\McqAdd;
 use App\Livewire\App\Question\QuestionType;
 use App\Livewire\App\Setting\Auth;
+use App\Livewire\App\Setting\QuestionSetting;
 use App\Livewire\App\Setting\SiteSetting;
 use App\Livewire\App\Setting\Smtp;
+use App\Livewire\App\TransactionHistory;
+use App\Livewire\App\Tras\AllCqDelQuestion;
+use App\Livewire\App\Tras\AllMcqDelQuestion;
+use App\Livewire\App\Tras\AllSqDelQuestion;
 use App\Livewire\App\Users\AddUsers;
 use App\Livewire\App\Users\AllAdmin;
 use App\Livewire\App\Users\AllStudent;
@@ -81,15 +86,22 @@ Route::prefix('/app')->middleware(['authCheck', 'checkrole', 'userStatus'])->gro
         // customize
         Route::get('/all-menu', MenuBuilder::class)->name('ux.allmenu');
 
+        // tras/bin
+        Route::get('/all-del-cqquestion', AllCqDelQuestion::class)->name('ux.del.cqquestion');
+        Route::get('/all-del-sqquestion', AllSqDelQuestion::class)->name('ux.del.sqquestion');
+        Route::get('/all-del-mcqquestion', AllMcqDelQuestion::class)->name('ux.del.macquestion');
+
         // settings
         Route::get('/smtp', Smtp::class)->name('ux.smtp');
         Route::get('/auth-setting', Auth::class)->name('ux.auth.setting');
         Route::get('/site-setting', SiteSetting::class)->name('ux.site.setting');
+        Route::get('/question-setting', QuestionSetting::class)->name('ux.question.setting');
 
         // single
         Route::get('/all-classes', AllClasses::class)->name('ux.allclasses');
         Route::get('/all-subject', AllSubjectes::class)->name('ux.allsubject');
         Route::get('/all-lession', AllLession::class)->name('ux.alllession');
+        Route::get('/transaction-history', TransactionHistory::class)->name('ux.alltransaction');
     });
 
     // for writer
@@ -102,6 +114,11 @@ Route::prefix('/app')->middleware(['authCheck', 'checkrole', 'userStatus'])->gro
         Route::get('/add-questions', AddQuestions::class)->name('ux.writer.addquestions');
         Route::get('/all-sq-questions', AllSqQuestion::class)->name('ux.writer.allquestions.sq');
         Route::get('/add-sq-questions', AddSqQuestion::class)->name('ux.writer.addquestions.sq');
+
+        // clas and other
+        Route::get('/all-classes', AllClasses::class)->name('ux.writer.allclasses');
+        Route::get('/all-subject', AllSubjectes::class)->name('ux.writer.allsubject');
+        Route::get('/all-lession', AllLession::class)->name('ux.writer.alllession');
     });
 
     // profile

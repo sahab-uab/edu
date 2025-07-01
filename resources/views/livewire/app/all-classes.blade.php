@@ -54,18 +54,17 @@
                                     <button wire:click='edit({{ $item->id }})' class="py-1 px-2">
                                         <i class="ri-pencil-line text-blue-500"></i>
                                     </button>
-                                    <button
-                                        x-data
-                                        @click.prevent="
+                                    @if (Auth::user()->role == 'admin')
+                                        <button x-data
+                                            @click.prevent="
                                             if (confirm('আপনি কি নিশ্চিত যে আপনি এই ক্লাসটি মুছে ফেলতে চান?\nবিঃদ্রঃ- আপনার এই ক্লাস এর সাথে সংশ্লিষ্ট সকল তথ্য একেবারে মুছে যাবে।')) {
                                                 $wire.delete({{ $item->id }});
                                             }
                                         "
-                                        class="py-1 px-2"
-                                        title="মুছে ফেলুন"
-                                    >
-                                        <i class="ri-delete-bin-line text-red-500"></i>
-                                    </button>
+                                            class="py-1 px-2" title="মুছে ফেলুন">
+                                            <i class="ri-delete-bin-line text-red-500"></i>
+                                        </button>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

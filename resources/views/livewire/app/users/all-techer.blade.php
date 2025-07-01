@@ -42,6 +42,8 @@
                         </th>
                         <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">
                             প্রতিষ্ঠানের নাম</th>
+                        <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">
+                            ব্যালেন্স</th>
                         <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">অবস্থা
                         </th>
                         <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">অ্যাকশন
@@ -83,6 +85,9 @@
                                 <span
                                     class="text-base font-semibold">{{ $item->techer_by_institute_name ?? 'নেই' }}</span>
                             </td>
+                            <td class="px-4 text-base py-3 whitespace-nowrap text-gray-600 font-semibold">
+                                {{ formatToBangla($item->amount) }} টাকা
+                            </td>
                             <td class="px-4 text-base py-3 whitespace-nowrap">
                                 <div class="flex items-center justify-center border border-gray-200 rounded-base w-fit">
                                     <button wire:click="changestatus({{ $item->id }}, 'active')"
@@ -103,6 +108,9 @@
                                         class="py-1 px-2">
                                         <i class="ri-pencil-line text-blue-500"></i>
                                     </a>
+                                    <button wire:click="moneyAddModel({{ $item->id }})" class="py-1 px-2">
+                                        <i class="ri-money-dollar-circle-line text-blue-500"></i>
+                                    </button>
                                     <button wire:confirm="আপনি কি নিশ্চিত যে আপনি এই শিক্ষকে মুছে ফেলতে চান?"
                                         wire:click='delete({{ $item->id }})' class="py-1 px-2">
                                         <i class="ri-delete-bin-line text-red-500"></i>
@@ -125,7 +133,8 @@
     </div>
 
     {{-- add model --}}
-    <x-ui.model model='{{ $model }}' modelTitle='শিক্ষক/শিক্ষিকা তথ্য' cardSize='400px' controller='modelhandler'>
+    <x-ui.model model='{{ $model }}' modelTitle='শিক্ষক/শিক্ষিকা তথ্য' cardSize='400px'
+        controller='modelhandler'>
         @if ($viewData)
             <div class="flex flex-col items-center">
                 <img class="w-[100px] h-[100px] rounded-full overflow-hidden flex items-center justify-center border-2 border-gray-200 object-cover"
@@ -179,6 +188,35 @@
                     @endforeach
                 @endif
             </div>
+        @endif
+    </x-ui.model>
+
+    {{-- add money model --}}
+    <x-ui.model model='{{ $Moneymodel }}' modelTitle='শিক্ষক/শিক্ষিকা জন্য ডিপোজিট' cardSize='400px'
+        controller='Moneymodelhandler'>
+        @if ($moneyModeldata)
+            <div class="flex justify-between gap-3 border-b border-gray-200 pb-3 mb-3">
+                <div>
+                    <h2 class="text-sm font-semibold text-dark">{{ $moneyModeldata->name }}</h2>
+                    <p class="text-sm text-gray-500">{{ $moneyModeldata->email }}</p>
+                </div>
+                <div>
+                    <h2 class="text-sm font-semibold text-dark text-end">বর্তমান ব্যালেন্সঃ-
+                        ৳{{ formatToBangla((float)$moneyModeldata->amount) }}
+                        টাকা</h2>
+                    <p class="text-[10px] text-gray-500 text-end">নতুন ব্যালেন্সঃ-
+                        ৳{{ formatToBangla((float)$moneyModeldata->amount) }} +
+                        ৳{{ formatToBangla((float)$deposit_amount) }} =
+                        ৳{{ formatToBangla((float) $moneyModeldata->amount + (float) $deposit_amount) }} টাকা </p>
+                </div>
+            </div>
+            <form wire:submit.prevent="depositNow">
+                <div class="flex flex-col gap-3">
+                    <x-ui.input step='0.01' label='পরিমান*' wire:model.live='deposit_amount'
+                        target='deposit_amount' />
+                    <x-ui.button text='যুক্ত করুন' type='submit' target='depositNow' class="justify-center" />
+                </div>
+            </form>
         @endif
     </x-ui.model>
 </div>

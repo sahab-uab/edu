@@ -9,14 +9,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
         @yield('title', 'Page title') |
-        {{ $siteSetting->site_title ? $siteSetting->site_title . ' - ' . config('app.name') : config('app.name') }}
+        {{ $siteSetting ? ($siteSetting->site_title ? $siteSetting->site_title . ' - ' . config('app.name') : config('app.name')) : config('app.name') }}
     </title>
     @if ($siteSetting)
         <link rel="shortcut icon"
             href="{{ $siteSetting->favicon ? asset('storage/' . $siteSetting->favicon) : get_media() }}"
             type="image/x-icon">
 
-        <meta name="title" content="{{ $siteSetting->meta_title ?? config('app.name')}}">
+        <meta name="title" content="{{ $siteSetting->meta_title ?? config('app.name') }}">
         <meta name="description" content="{{ $siteSetting->meta_description ?? 'Welcome to my site' }}">
         <meta name="keywords" content="{{ $siteSetting->meta_keywords ?? 'tech, blog, laravel' }}">
     @endif

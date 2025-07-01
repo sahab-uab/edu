@@ -2,24 +2,24 @@
     <ul>
         @foreach ($menulist as $index => $item)
             <li class="py-2 px-4 relative transition-all
-                @if(!empty($item['sub']) && in_array(Route::currentRouteName(), $item['current']))
-                    bg-gray-50/10
+                @if (!empty($item['sub']) && !empty($item['current']) && is_array($item['current']) && in_array(Route::currentRouteName(), $item['current'])) bg-gray-50/10
+                @elseif (empty($item['sub']) && Route::currentRouteName() == ($item['current'] ?? null)) bg-gray-50/10
                 @endif
                 hover:bg-gray-50/10 group"
-                @if(!empty($item['sub'])) onclick="toggleclass('#submenu{{ $index }}', ['hidden'])" @endif
-            >
-
+                @if (!empty($item['sub'])) onclick="toggleclass('#submenu{{ $index }}', ['hidden'])" @endif>
                 <!-- Main Menu -->
-                <a href="{{ !empty($item['sub']) ? 'javascript:void(0);' : ($item['url'] ?? '#') }}"
+                <a href="{{ !empty($item['sub']) ? 'javascript:void(0);' : $item['url'] ?? '#' }}"
                     @if (empty($item['sub'])) wire:navigate @endif class="flex items-center justify-between">
                     <div class="flex items-center gap-x-2 text-white group-hover:text-primary">
-                        <i class="{{ $item['icon'] ?? '' }} text-lg transition-colors group-hover:text-primary mb-[2px]"></i>
+                        <i
+                            class="{{ $item['icon'] ?? '' }} text-lg transition-colors group-hover:text-primary mb-[2px]"></i>
                         <span class="text-base font-semibold transition-colors group-hover:text-primary">
                             {{ $item['text'] }}
                         </span>
                     </div>
                     @if (!empty($item['sub']))
-                        <i class="ri-arrow-down-s-line text-white ml-2 group-hover:text-primary transition-transform group-hover:rotate-180"></i>
+                        <i
+                            class="ri-arrow-down-s-line text-white ml-2 group-hover:text-primary transition-transform group-hover:rotate-180"></i>
                     @endif
                 </a>
 

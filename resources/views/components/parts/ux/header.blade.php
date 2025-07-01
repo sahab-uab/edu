@@ -46,6 +46,19 @@
                     <i class="ri-lock-star-line"></i>
                     <span>সিকিউরিটি</span>
                 </a>
+                @if (Auth::user()->role == 'teacher')
+                    <hr class="border-gray-100 my-1">
+                    <a href="javascript:void(0);"
+                        class="flex items-center gap-2 w-full px-3 py-2 text-gray-500 duration-300 hover:text-dark text-sm">
+                        <i class="ri-copper-coin-line"></i>
+                        <span>{{ formatToBangla(Auth::user()->amount) }} টাকা</span>
+                    </a>
+                    <a href="{{ route('ux.profile.security') }}" wire:navigate
+                        class="flex items-center gap-2 w-full px-3 py-2 text-gray-500 duration-300 hover:text-dark text-sm">
+                        <i class="ri-copper-coin-line"></i>
+                        <span>ক্যাস ইন করুন</span>
+                    </a>
+                @endif
                 <hr class="border-gray-100 my-1">
                 <a href="{{ route('logout') }}" wire:navigate
                     class="flex items-center gap-2 w-full px-3 py-2 text-gray-500 duration-300 hover:text-red-500 text-sm">
