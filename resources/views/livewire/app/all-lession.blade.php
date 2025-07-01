@@ -40,7 +40,8 @@
                             <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">
                                 বিষয়
                             </th>
-                            <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">অধ্যায় নাম
+                            <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">
+                                অধ্যায় নাম
                             </th>
                             <th class="px-4 py-3 text-left text-sm font-bold text-gray-600 uppercase tracking-wider">
                                 অ্যাকশন
@@ -67,8 +68,12 @@
                                         <button wire:click='edit({{ $item->id }})' class="py-1 px-2">
                                             <i class="ri-pencil-line text-blue-500"></i>
                                         </button>
-                                        <button wire:confirm="আপনি কি নিশ্চিত যে আপনি এই অধ্যায়টি মুছে ফেলতে চান?"
-                                            wire:click='delete({{ $item->id }})' class="py-1 px-2">
+                                        <button
+                                            @click.prevent="
+                                            if (confirm('আপনি কি নিশ্চিত যে আপনি এই অধ্যায়টি মুছে ফেলতে চান?\nবিঃদ্রঃ- আপনার এই অধ্যায়টি এর সাথে সংশ্লিষ্ট সকল তথ্য একেবারে মুছে যাবে।')) {
+                                                $wire.delete({{ $item->id }});
+                                            }"
+                                            class="py-1 px-2">
                                             <i class="ri-delete-bin-line text-red-500"></i>
                                         </button>
                                     </div>

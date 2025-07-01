@@ -136,6 +136,9 @@ class AddQuestions extends Component
         }
         $q->videoLink = $this->videoLink;
         $q->created_by = Auth::id();
+        if ($this->editId) {
+            $q->updated_by = Auth::id();
+        }
         $save = $q->save();
 
         if ($save) {

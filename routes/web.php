@@ -7,6 +7,8 @@ use App\Livewire\App\Question\AllQuestions;
 use App\Livewire\App\AllSubjectes;
 use App\Livewire\App\Customize\MenuBuilder;
 use App\Livewire\App\Dashboard;
+use App\Livewire\App\Profile\ProfileInfo;
+use App\Livewire\App\Profile\Security;
 use App\Livewire\App\Question\AddSqQuestion;
 use App\Livewire\App\Question\AllCqQuestion;
 use App\Livewire\App\Question\AllSqQuestion;
@@ -101,6 +103,10 @@ Route::prefix('/app')->middleware(['authCheck', 'checkrole', 'userStatus'])->gro
         Route::get('/all-sq-questions', AllSqQuestion::class)->name('ux.writer.allquestions.sq');
         Route::get('/add-sq-questions', AddSqQuestion::class)->name('ux.writer.addquestions.sq');
     });
+
+    // profile
+    Route::get('/profile', ProfileInfo::class)->name('ux.profile.info');
+    Route::get('/security', Security::class)->name('ux.profile.security');
 });
 
 // logoout
@@ -112,6 +118,6 @@ Route::get('/maintenance', function () {
 })->name('ui.maintenance');
 
 // user block
-Route::get('/maintenance', function () {
+Route::get('/userblock', function () {
     return view('errors.userblcok');
 })->middleware('authCheck')->name('ui.blockuser');

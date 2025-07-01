@@ -161,6 +161,9 @@ class McqAdd extends Component
         }
         $q->right = $this->answer;
         $q->created_by = Auth::id();
+        if ($this->editId) {
+            $q->updated_by = Auth::id();
+        }
         $save = $q->save();
 
         if ($save) {

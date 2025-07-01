@@ -14,9 +14,10 @@
                 text='' iconclass='ri-user-line' variant='action-primary' size='xsm' />
 
             <div id="profiledropdown"
-                class="absolute translate-y-5 pointer-events-none opacity-0 duration-300 pb-1 min-w-[130px] top-full flex flex-col mt-3 bg-white rounded-base border border-gray-200 right-0 z-[30]">
+                class="absolute translate-y-5 pointer-events-none opacity-0 duration-300 pb-1 min-w-[130px] top-full flex flex-col mt-6 bg-white rounded-base border border-gray-200 right-0 z-[30]">
                 <div class="flex flex-col items-center gap-2 mb-2 p-3 bg-gray-50/50 rounded-base">
-                    <img src="{{ get_media(Auth::user()->profile) }}" class="w-7 h-7 rounded-base">
+                    <img src="{{ Auth::user()->profile ? asset('storage/' . Auth::user()->profile) : get_media() }}"
+                        class="w-7 h-7 object-cover border border-gray-300 rounded-base">
                     <div>
                         <p class="text-sm font-normal text-center">{{ Str::limit(Auth::user()->name, 10) }}</p>
                         <p class="text-sm font-normal text-center capitalize">
@@ -35,12 +36,12 @@
                     </div>
                 </div>
 
-                <a href=""
+                <a href="{{ route('ux.profile.info') }}" wire:navigate
                     class="flex items-center gap-2 w-full px-3 py-2 text-gray-500 duration-300 hover:text-dark text-sm">
                     <i class="ri-user-line"></i>
                     <span>প্রোফাইল</span>
                 </a>
-                <a href=""
+                <a href="{{ route('ux.profile.security') }}" wire:navigate
                     class="flex items-center gap-2 w-full px-3 py-2 text-gray-500 duration-300 hover:text-dark text-sm">
                     <i class="ri-lock-star-line"></i>
                     <span>সিকিউরিটি</span>
