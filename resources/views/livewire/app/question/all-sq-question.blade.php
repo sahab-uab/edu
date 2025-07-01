@@ -1,8 +1,13 @@
 <div>
     <div class="flex items-center gap-2 w-fit">
-        <x-ui.button href='ux.allquestions' text='সকল MCQ প্রশ্ন' size='xsm' variant='action-primary' />
-        <x-ui.button href='ux.allcqquestions' text='সকল CQ প্রশ্ন' size='xsm' variant='action-primary' />
-        <x-ui.button href='ux.allquestions.sq' text='সকল SQ প্রশ্ন' size='xsm' />
+        @php
+            $allQuestionBtn = Auth::user()->role == 'admin' ? 'ux.allquestions' : 'ux.writer.allquestions';
+            $allCqQuestionBtn = Auth::user()->role == 'admin' ? 'ux.allcqquestions' : 'ux.writer.allcqquestions';
+            $allSqQuestionBtn = Auth::user()->role == 'admin' ? 'ux.allquestions.sq' : 'ux.writer.allquestions.sq';
+        @endphp
+        <x-ui.button :href="$allQuestionBtn" text='সকল MCQ প্রশ্ন' size='xsm' variant='action-primary' />
+        <x-ui.button :href="$allCqQuestionBtn" text='সকল CQ প্রশ্ন' size='xsm' variant='action-primary' />
+        <x-ui.button :href="$allSqQuestionBtn" text='সকল SQ প্রশ্ন' size='xsm' />
     </div>
 
     <div class="bg-white p-4 rounded-base mt-5">
@@ -13,9 +18,12 @@
                     onclick="toggleclass('#filter', ['hidden'])" />
                 <x-ui.input size='sm' wire:model.live='search' type='search' hint='সার্চ করুন' />
             </div>
-            <x-ui.button href='ux.addquestions.sq' text='নতুন প্রশ্ন' iconclass='ri-add-line' iconposition='left'
+            @php
+                $AddBtnText = Auth::user()->role == 'admin' ? 'ux.addquestions.sq' : 'ux.writer.addquestions.sq';
+            @endphp
+            <x-ui.button :href="$AddBtnText" text='নতুন প্রশ্ন' iconclass='ri-add-line' iconposition='left'
                 size='xsm' class='hidden md:flex' />
-            <x-ui.button href='ux.addquestions.sq' class='md:hidden' text='' iconclass='ri-add-line'
+            <x-ui.button :href="$AddBtnText" class='md:hidden' text='' iconclass='ri-add-line'
                 iconposition='left' size='xsm' />
         </div>
         <div class="flex items-center gap-3 mt-4 hidden flex-wrap" id="filter">
@@ -129,7 +137,7 @@
                     class="w-full flex flex-col items-center justify-center p-5 rounded-base border border-gray-100 mt-4">
                     <i class="ri-emotion-sad-line text-gray-500 text-3xl"></i>
                     <p class="text-base font-semibold text-gray-500 mt-2">কোন প্রশ্ন পাওয়া যায়নি!</p>
-                    <x-ui.button href='ux.addquestions.sq' text='নতুন প্রশ্ন যোগ করুন' iconclass='ri-add-line'
+                    <x-ui.button :href="$AddBtnText" text='নতুন প্রশ্ন যোগ করুন' iconclass='ri-add-line'
                         iconposition='left' size='xsm' class='mt-3' />
                 </div>
             @endif
@@ -153,13 +161,13 @@
             <h2 class="text-base font-semibold math-container">{{ $viewData->questiontitle ?? '' }}</h2>
             <div class="mt-4 flex flex-col gap-4">
                 <div>
-                    <div class="flex items-center gap-x-2 text-sm text-gray-600">
-                        <span class="text-dark">প্রশ্নঃ </span>
-                        <span>{{ $viewData->q_1 }}</span>
+                    <div class="flex items-start gap-x-2 text-sm text-gray-600">
+                        <span class="text-dark math-container">প্রশ্নঃ </span>
+                        <span class="math-container">{{ $viewData->q_1 }}</span>
                     </div>
-                    <div class="flex items-center gap-x-2 text-sm text-gray-600 mt-1">
-                        <span class="text-dark">উত্তরঃ </span>
-                        <span>{{ $viewData->q_1_ans ?? 'নেই' }}</span>
+                    <div class="flex items-start gap-x-2 text-sm text-gray-600 mt-1">
+                        <span class="text-dark math-container">উত্তরঃ </span>
+                        <span class="math-container">{{ $viewData->q_1_ans ?? 'নেই' }}</span>
                     </div>
                 </div>
             </div>

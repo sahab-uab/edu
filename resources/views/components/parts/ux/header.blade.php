@@ -26,6 +26,8 @@
                                 শিক্ষক
                             @elseif(Auth::user()->role == 'student')
                                 ছাত্র/ছত্রী
+                            @elseif(Auth::user()->role == 'writer')
+                                এডিটর
                             @else
                                 অন্যান
                             @endif

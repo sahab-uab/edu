@@ -95,7 +95,7 @@ class AddUsers extends Component
             'userrole' => 'required|in:admin,teacher,student,writer,support',
             'name' => 'required|string',
             'email' => 'required|email|' . $this->editId ? '' : 'unique:users,email',
-            'password' => $this->editId ? 'nullable' : 'required' . '|min:6',
+            'password' => $this->editId ? 'nullable' : 'required' . '|min:8',
             'image' => 'nullable|image|max:2000',
             'gender' => 'nullable|in:male,female,other',
             'blood_group' => 'nullable|in:A+,A-,B+,B-,AB+,AB-,O+,O-',
@@ -114,7 +114,7 @@ class AddUsers extends Component
             'email.email' => 'সঠিক ইমেইল লিখুন।',
             'email.unique' => 'এই ইমেইল দিয়ে একজন ইউজার রয়েছে।',
             'password.required' => 'পাসওয়ার্ড লিখুন।',
-            'password.min' => 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।',
+            'password.min' => 'পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।',
             'userrole.required' => 'রোল নির্বাচন করুন।',
             'userrole.in' => 'রোল অবশ্যই [এডমিন, শিক্ষক, ছাত্র/ছাত্রী, ইডিটর, সাপোর্ট] হতে হবে।',
             'name.required' => 'নাম লিখুন।',
@@ -178,6 +178,8 @@ class AddUsers extends Component
                 $this->redirectRoute('ux.allteacher', navigate: true);
             } else if ($this->userrole == 'admin') {
                 $this->redirectRoute('ux.alladmin', navigate: true);
+            } else if ($this->userrole == 'writer') {
+                $this->redirectRoute('ux.allwriter', navigate: true);
             } else {
                 $this->redirectRoute('ux.add.users', navigate: true);
             }

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Ui\Auth;
 
+use App\Models\GoogleAuth;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -10,6 +11,21 @@ use Livewire\Component;
 #[Layout('components.layouts.auth')]
 class Login extends Component
 {
+    public $googleLoginStatus = 'off';
+    public function mount()
+    {
+        $googleSetting = GoogleAuth::first();
+        if ($googleSetting && isset($googleSetting->client_id, $googleSetting->client_secrate, $googleSetting->status)) {
+            if ($googleSetting->status === 'active') {
+                $this->googleLoginStatus = 'on';
+            } else {
+                $this->googleLoginStatus = 'off';
+            }
+        } else {
+            $this->googleLoginStatus = 'off';
+        }
+    }
+
     public $email = '';
     public $password = '';
     public function login()
@@ -27,7 +43,7 @@ class Login extends Component
 
         if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
             session()->flash('success', 'আপনি সফলভাবে নিবন্ধন ও লগইন করেছিলেন!');
-            $this->redirectRoute('ux.dashboard', navigate:true);
+            $this->redirectRoute('ux.dashboard', navigate: true);
         } else {
             session()->flash('error', 'ইমেইল বা পাসওয়ার্ড ভুল হয়েছে');
         }

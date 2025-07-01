@@ -138,14 +138,21 @@
                 }
             }))
         }
+        window.addEventListener('DOMContentLoaded', () => {
+            document.addEventListener('livewire:navigated', () => {
+                dragEnable();
+            });
+        })
         document.addEventListener('alpine:init', () => {
             dragEnable();
         });
         document.addEventListener('livewire:init', () => {
             dragEnable();
-            document.addEventListener('livewire:navigated', () => {
-                dragEnable();
-            });
+            Livewire.hook('morph.updated', () => {
+                setTimeout(() => {
+                    dragEnable();
+                }, 100);
+            })
         });
     </script>
 @endpush

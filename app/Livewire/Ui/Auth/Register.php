@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Ui\Auth;
 
+use App\Models\GoogleAuth;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
@@ -11,6 +12,21 @@ use Livewire\Component;
 #[Layout('components.layouts.auth')]
 class Register extends Component
 {
+    public $googleLoginStatus = 'on';
+    public function mount()
+    {
+        $googleSetting = GoogleAuth::first();
+        if ($googleSetting && isset($googleSetting->client_id, $googleSetting->client_secrate, $googleSetting->status)) {
+            if ($googleSetting->status === 'active') {
+                $this->googleLoginStatus = 'on';
+            } else {
+                $this->googleLoginStatus = 'off';
+            }
+        } else {
+            $this->googleLoginStatus = 'off';
+        }
+    }
+
     public $name = '';
     public $email = '';
     public $password = '';
@@ -36,7 +52,7 @@ class Register extends Component
         ]);
         Auth::login($user);
         session()->flash('success', 'আপনি সফলভাবে নিবন্ধন ও লগইন করেছিলেন!');
-        $this->redirectRoute('ux.dashboard', navigate:true);
+        $this->redirectRoute('ux.dashboard', navigate: true);
     }
 
     #[Title('রেজিস্ট্রেশন করুন')]

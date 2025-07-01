@@ -13,17 +13,20 @@
             </div>
 
             <div class="flex flex-col gap-4 mt-4">
-                <a href="{{ route('google.redirect') }}" class="btn border border-gray-200 bg-gray-50 justify-center">
-                    <i class="ri-google-fill"></i>
-                    <span>গুগল দিয়ে লগিন করুন</span>
-                </a>
-                <div class="flex items-center justify-between my-2">
-                    <div class="w-full h-[1px] border-b border-gray-300"></div>
-                    <span class="mx-5 text-sm font-semibold text-gray-500">আথবা</span>
-                    <div class="w-full h-[1px] border-b border-gray-300"></div>
-                </div>
+                @if ($googleLoginStatus == 'on')
+                    <a href="{{ route('google.redirect') }}"
+                        class="btn border border-gray-200 bg-gray-50 justify-center">
+                        <i class="ri-google-fill"></i>
+                        <span>গুগল দিয়ে লগিন করুন</span>
+                    </a>
+                    <div class="flex items-center justify-between">
+                        <div class="w-full h-[1px] border-b border-gray-300"></div>
+                        <span class="mx-5 text-sm font-semibold text-gray-500">আথবা</span>
+                        <div class="w-full h-[1px] border-b border-gray-300"></div>
+                    </div>
+                @endif
 
-                <x-ui.alert/>
+                <x-ui.alert />
 
                 <form wire:submit.prevent="login" class="flex flex-col gap-4">
                     <x-ui.input wire:model='email' target='email' label='ইমেইল' type='email' class='w-full'

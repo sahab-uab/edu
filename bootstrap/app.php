@@ -4,6 +4,8 @@ use App\Http\Middleware\AuthCheck;
 use App\Http\Middleware\GuestCheck;
 use App\Http\Middleware\RoleBase;
 use App\Http\Middleware\RoleCheck;
+use App\Http\Middleware\SiteMode;
+use App\Http\Middleware\StatusCheck;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -20,6 +22,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'guestCheck' => GuestCheck::class,
             'checkrole' => RoleCheck::class,
             'roleBase' => RoleBase::class,
+            'maintenance' => SiteMode::class,
+            'userStatus' => StatusCheck::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

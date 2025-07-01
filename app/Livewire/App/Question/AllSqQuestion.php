@@ -7,6 +7,7 @@ use App\Models\GroupeClass;
 use App\Models\Lession;
 use App\Models\QuestionType;
 use App\Models\SqQuestion;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -46,7 +47,8 @@ class AllSqQuestion extends Component
             if ($mcq->image_link && Storage::disk('public')->exists($mcq->image_link)) {
                 Storage::disk('public')->delete($mcq->image_link);
             }
-            $mcq->delete();
+            $mcq->delete = 'deleted';
+            $mcq->save();
             session()->flash('success', 'প্রশ্নটি সফলভাবে মুছে ফেলা হয়েছে।');
         } else {
             session()->flash('error', 'প্রশ্নটি পাওয়া যায়নি।');
@@ -91,7 +93,10 @@ class AllSqQuestion extends Component
         if ($this->type_id) {
             $query->where('type_id', $this->type_id);
         }
-        $data = $query->with(['groupeClass', 'subject', 'lession', 'type', 'created_who', 'updated_who'])->latest()->paginate(10);
+        if (Auth::user()->role != 'admin') {
+            $query->where('created_by', Auth::user()->id);
+        }
+        $data = $query->where('delete', 'no')->with(['groupeClass', 'subject', 'lession', 'type', 'created_who', 'updated_who'])->latest()->paginate(10);
         // other
         $all_class = GroupeClass::pluck('name', 'id')->toArray();
         $all_subject = Allsubject::pluck('name', 'id')->toArray();

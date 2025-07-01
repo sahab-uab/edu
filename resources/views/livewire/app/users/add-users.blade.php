@@ -11,7 +11,7 @@
                 <x-ui.input label='ইউজার নাম*' hint='নাম প্রদান করুন' target='name' wire:model='name' />
                 <x-ui.input label='ইউজার ইমেইল*' type='email' hint='ইমেইল প্রদান করুন' target='email'
                     wire:model='email' />
-                <x-ui.input label='ইউজার পাসওয়ার্ড*' hint='পাসওয়ার্ড প্রদান করুন' target='password'
+                <x-ui.input label='ইউজার পাসওয়ার্ড*' type='password' hint='পাসওয়ার্ড প্রদান করুন' target='password'
                     wire:model='password' />
                 @if ($userrole == 'student')
                     <x-ui.select label='ক্লাস' :dataoption="$classList" wire:model='groupclass' target='groupclass' />
@@ -62,9 +62,9 @@
                     @enderror
                     @if (!empty($editId))
                         <p class="text-sm text-gray-500 mt-1.5">
-                            <strong>নোটঃ </strong>
-                            <span>দয়া করে মনে রাখবেন, ইউজারের ধরন (role) পরিবর্তন করলে পূর্বের সংশ্লিষ্ট সকল তথ্য মুছে
-                                যাবে এবং নতুনভাবে তথ্য প্রদান করতে হবে।</span>
+                            <span>
+                                <strong>দ্রষ্টব্য:</strong> ইউজারের ধরন (Role) যদি <span class="font-semibold text-primary">ছাত্র/ছাত্রী</span> বা <span class="font-semibold text-primary">শিক্ষক</span> থেকে অন্য কোনো ধরনে পরিবর্তন করা হয়, তাহলে পূর্বের সংশ্লিষ্ট সকল তথ্য স্থায়ীভাবে মুছে যাবে। নতুন ধরন অনুযায়ী তথ্য পুনরায় প্রদান করতে হবে।
+                            </span></span>
                         </p>
                     @endif
                 </div>

@@ -42,7 +42,8 @@ class AddQuestions extends Component
 
     #[Url(as: 'id')]
     public $editId = null;
-    public function mount(){
+    public function mount()
+    {
         if ($this->editId) {
             $data = CqQuestion::find($this->editId);
             if ($data) {
@@ -62,9 +63,9 @@ class AddQuestions extends Component
                 $this->q_4_ans = $data->q_4_ans;
                 $this->oldImage = $data->image;
                 $this->videoLink = $data->videoLink;
-            }else{
+            } else {
                 session()->flash('error', 'কিছু একটা সমাস্যা হয়েছে আবার চেস্টা করুন।');
-                $this->redirectRoute('ux.allcqquestions', navigate:true);
+                $this->redirectRoute('ux.allcqquestions', navigate: true);
             }
         }
     }
@@ -111,7 +112,7 @@ class AddQuestions extends Component
 
         $q = $this->editId ? CqQuestion::find($this->editId) : new CqQuestion();
         $q->class_id = $this->class_id;
-        $q->type_id	 = $this->question_type_id;
+        $q->type_id     = $this->question_type_id;
         $q->subject_id = $this->subject_id;
         $q->lession_id = $this->lession_id;
         $q->questiontitle = $this->questiontitle;
@@ -139,7 +140,11 @@ class AddQuestions extends Component
 
         if ($save) {
             session()->flash('success', $this->editId ? 'প্রশ্ন আপডেট হয়েছে।' : 'প্রশ্ন সফলভাবে সংরক্ষণ করা হয়েছে।');
-            $this->redirectRoute('ux.allcqquestions', navigate: true);
+            if (Auth::user()->role == 'admin') {
+                $this->redirectRoute('ux.allcqquestions', navigate: true);
+            } else {
+                $this->redirectRoute('ux.writer.allcqquestions', navigate: true);
+            }
         } else {
             session()->flash('error', 'প্রশ্ন সংরক্ষণে ত্রুটি ঘটেছে।');
         }

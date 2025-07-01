@@ -12,6 +12,8 @@ use App\Livewire\App\Question\AllCqQuestion;
 use App\Livewire\App\Question\AllSqQuestion;
 use App\Livewire\App\Question\McqAdd;
 use App\Livewire\App\Question\QuestionType;
+use App\Livewire\App\Setting\Auth;
+use App\Livewire\App\Setting\SiteSetting;
 use App\Livewire\App\Setting\Smtp;
 use App\Livewire\App\Users\AddUsers;
 use App\Livewire\App\Users\AllAdmin;
@@ -29,33 +31,32 @@ use App\Livewire\Ui\Home;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Route;
 
-// ui
-Route::get('/', Home::class)->name('ui.home');
+Route::middleware('maintenance')->group(function () {
+    // ui
+    Route::get('/', Home::class)->name('ui.home');
 
-// social auth
-Route::get('/auth/redirect', function () {
-    return Socialite::driver('google')->redirect();
-})->name('google.redirect');
-Route::get('/auth/google/callback', Google::class);
+    // social auth
+    Route::get('/auth/redirect', function () {
+        return Socialite::driver('google')->redirect();
+    })->name('google.redirect');
+    Route::get('/auth/google/callback', Google::class);
 
-// site auth
-Route::middleware(['guestCheck'])->group(function () {
-    Route::get('/login', Login::class)->name('ui.login');
-    Route::get('/signup', Register::class)->name('ui.signup');
-    Route::get('/forgat-password', Forget::class)->name('ui.forgate');
-    Route::get('/reset-password/{token}', ResetPass::class)->name('ui.password.reset');
+    // site auth
+    Route::middleware(['guestCheck'])->group(function () {
+        Route::get('/login', Login::class)->name('ui.login');
+        Route::get('/signup', Register::class)->name('ui.signup');
+        Route::get('/forgat-password', Forget::class)->name('ui.forgate');
+        Route::get('/reset-password/{token}', ResetPass::class)->name('ui.password.reset');
+    });
+
+    // role select
+    Route::middleware(['authCheck'])->group(function () {
+        Route::get('/choicerole', Rolechoice::class)->name('ui.setrole');
+    });
 });
-
-// role select
-Route::middleware(['authCheck'])->group(function () {
-    Route::get('/choicerole', Rolechoice::class)->name('ui.setrole');
-});
-
-// logoout
-Route::get('/logout', Logout::class)->name('logout');
 
 // app
-Route::prefix('/app')->middleware(['authCheck', 'checkrole'])->group(function () {
+Route::prefix('/app')->middleware(['authCheck', 'checkrole', 'userStatus'])->group(function () {
     Route::get('/', Dashboard::class)->name('ux.dashboard');
     // for admin
     Route::middleware('roleBase:admin')->group(function () {
@@ -80,10 +81,37 @@ Route::prefix('/app')->middleware(['authCheck', 'checkrole'])->group(function ()
 
         // settings
         Route::get('/smtp', Smtp::class)->name('ux.smtp');
+        Route::get('/auth-setting', Auth::class)->name('ux.auth.setting');
+        Route::get('/site-setting', SiteSetting::class)->name('ux.site.setting');
 
         // single
         Route::get('/all-classes', AllClasses::class)->name('ux.allclasses');
         Route::get('/all-subject', AllSubjectes::class)->name('ux.allsubject');
         Route::get('/all-lession', AllLession::class)->name('ux.alllession');
     });
+
+    // for writer
+    Route::middleware('roleBase:writer')->prefix('/writer')->group(function () {
+        // for questions
+        Route::get('/question-type', QuestionType::class)->name('ux.writer.questions.type');
+        Route::get('/all-questions', AllQuestions::class)->name('ux.writer.allquestions');
+        Route::get('/add-mcq-questions', McqAdd::class)->name('ux.writer.addquestions.mcq');
+        Route::get('/all-cq-questions', AllCqQuestion::class)->name('ux.writer.allcqquestions');
+        Route::get('/add-questions', AddQuestions::class)->name('ux.writer.addquestions');
+        Route::get('/all-sq-questions', AllSqQuestion::class)->name('ux.writer.allquestions.sq');
+        Route::get('/add-sq-questions', AddSqQuestion::class)->name('ux.writer.addquestions.sq');
+    });
 });
+
+// logoout
+Route::get('/logout', Logout::class)->name('logout');
+
+// maintenance
+Route::get('/maintenance', function () {
+    return view('errors.maintenance');
+})->name('ui.maintenance');
+
+// user block
+Route::get('/maintenance', function () {
+    return view('errors.userblcok');
+})->middleware('authCheck')->name('ui.blockuser');

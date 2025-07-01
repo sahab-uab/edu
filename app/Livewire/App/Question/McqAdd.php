@@ -165,7 +165,11 @@ class McqAdd extends Component
 
         if ($save) {
             session()->flash('success', $this->editId ? 'MCQ প্রশ্ন সফলভাবে আপডেট করা হয়েছে।' : 'MCQ প্রশ্ন সফলভাবে সংরক্ষণ করা হয়েছে।');
-            $this->redirectRoute('ux.allquestions', navigate: true);
+            if (Auth::user()->role == 'admin') {
+                $this->redirectRoute('ux.allquestions', navigate: true);
+            } else {
+                $this->redirectRoute('ux.writer.allquestions', navigate: true);
+            }
         } else {
             session()->flash('error', 'MCQ প্রশ্ন সংরক্ষণে ত্রুটি ঘটেছে।');
         }

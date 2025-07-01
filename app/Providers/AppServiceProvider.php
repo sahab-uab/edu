@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\GoogleAuth;
 use App\Models\MailSetting;
+use App\Models\SiteSetting;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 
@@ -37,6 +39,23 @@ class AppServiceProvider extends ServiceProvider
                 ],
             ];
             Config::set('mail', $config);
+        }
+
+        // google auth setting
+        $googleSetting = GoogleAuth::first();
+        if ($googleSetting && isset($googleSetting->client_id, $googleSetting->client_secrate)) {
+            $server_base_url = config('app.url') ?? url('/');
+            $redirect_url = $server_base_url . '/auth/google/callback';
+
+            Config::set('services.google.client_id', $googleSetting->client_id);
+            Config::set('services.google.client_secret', $googleSetting->client_secrate);
+            Config::set('services.google.redirect', $redirect_url);
+        }
+
+        // app name
+        $siteSetting = SiteSetting::first();
+        if ($siteSetting && $siteSetting->site_name) {
+            Config::set('app.name', $siteSetting->site_name);
         }
     }
 }

@@ -124,15 +124,38 @@ class SidebarMenu extends Component
                 ]
             ],
             [
-                'icon' => 'ri-settings-2-line',
+                'icon' => 'ri-delete-bin-4-line',
                 'url' => '',
-                'text' => 'সেটিংস',
+                'text' => 'রিসাইকেল বাক্স',
                 'current' => ['ux.smtp'],
                 'sub' => [
                     [
                         'url' => route('ux.smtp'),
                         'text' => 'SMTP',
                         'current' => 'ux.smtp'
+                    ],
+                ]
+            ],
+            [
+                'icon' => 'ri-settings-2-line',
+                'url' => '',
+                'text' => 'সেটিংস',
+                'current' => ['ux.smtp', 'ux.auth.setting', 'ux.site.setting'],
+                'sub' => [
+                    [
+                        'url' => route('ux.site.setting'),
+                        'text' => 'সাইট সেটিংস',
+                        'current' => 'ux.site.setting'
+                    ],
+                    [
+                        'url' => route('ux.smtp'),
+                        'text' => 'SMTP',
+                        'current' => 'ux.smtp'
+                    ],
+                    [
+                        'url' => route('ux.auth.setting'),
+                        'text' => 'অথেনটিকেট',
+                        'current' => 'ux.auth.setting'
                     ],
                 ]
             ]
@@ -148,11 +171,42 @@ class SidebarMenu extends Component
             ],
         ];
 
+        // writer
+        $writerMenu = [
+            [
+                'icon' => 'ri-question-line',
+                'url' => route('ux.writer.allquestions'),
+                'text' => 'সকল প্রশ্ন',
+                'current' => 'ux.allquestions'
+            ],
+            [
+                'icon' => 'ri-question-line',
+                'url' => route('ux.writer.addquestions.mcq'),
+                'text' => 'MCQ প্রশ্ন তৈরি',
+                'current' => 'ux.addquestions.mcq'
+            ],
+            [
+                'icon' => 'ri-question-line',
+                'url' => route('ux.writer.addquestions'),
+                'text' => 'CQ প্রশ্ন তৈরি',
+                'current' => 'ux.addquestions'
+            ],
+            [
+                'icon' => 'ri-question-line',
+                'url' => route('ux.writer.addquestions.sq'),
+                'text' => 'SQ প্রশ্ন তৈরি',
+                'current' => 'ux.addquestions.sq'
+            ],
+        ];
+
         if (Auth::user()->role == 'admin') {
             $this->menulist = $adminMenu;
         }
         if (Auth::user()->role == 'teacher') {
             $this->menulist = $teacherMenu;
+        }
+        if (Auth::user()->role == 'writer') {
+            $this->menulist = $writerMenu;
         }
     }
 

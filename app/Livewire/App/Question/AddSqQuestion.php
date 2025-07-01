@@ -86,7 +86,11 @@ class AddSqQuestion extends Component
 
         if ($save) {
             session()->flash('success', $this->editId ? 'প্রশ্ন আপডেট হয়েছে।' : 'প্রশ্ন সফলভাবে সংরক্ষণ করা হয়েছে।');
-            $this->redirectRoute('ux.addquestions.sq', navigate: true);
+            if (Auth::user()->role  == 'admin') {
+                $this->redirectRoute('ux.allquestions.sq', navigate: true);
+            } else {
+                $this->redirectRoute('ux.writer.allquestions.sq', navigate: true);
+            }
         } else {
             session()->flash('error', 'প্রশ্ন সংরক্ষণে ত্রুটি ঘটেছে।');
         }

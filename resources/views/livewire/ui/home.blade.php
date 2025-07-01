@@ -22,7 +22,7 @@
     {{-- banner end --}}
 
     {{-- choicers --}}
-    <section class='py-20'>
+    <section class='py-15'>
         <div class="safearea flex-col justify-center">
             <div>
                 <h1 class="text-3xl font-bold text-dark text-center">{{ config('app.name') }} কেন বেছে নেবেন?</h1>
@@ -51,7 +51,7 @@
                         class="ri-shield-user-fill w-12 h-12 rounded-base flex items-center justify-center text-2xl bg-gray-100 text-primary mb-4"></i>
                     <h1 class="text-base font-bold text-dark">শিক্ষক হোন</h1>
                     <p class="text-gray-600 text-sm mt-1">আপনার জ্ঞান দিয়ে নতুন প্রজন্মকে গড়ে তুলুন — সহজ পদ্ধতিতে
-                        শিক্ষক হিসেবে যোগদান করুন এবং পেপারলেস পরীক্ষার মাধ্যমে শিক্ষাদানে এগিয়ে যান।</p>
+                        শিক্ষক হিসেবে যোগদান করে শুরু করুন।</p>
                 </div>
             </div>
         </div>
@@ -68,7 +68,7 @@
                         <i
                             class="ri-question-fill min-w-10 min-h-10 bg-secondary/10 rounded-full flex items-center justify-center text-secondary"></i>
                         <p class="text-sm text-gray-500 font-semibold">
-                            সেরা অনলাইন প্রশ্ন থেকে {{ formatToBangla(10000) }} টি
+                            সেরা অনলাইন প্রশ্ন থেকে {{ formatToBangla(10000) }} টি।
                         </p>
                     </div>
                     <div
@@ -76,7 +76,7 @@
                         <i
                             class="ri-user-smile-fill min-w-10 min-h-10 bg-secondary/10 rounded-full flex items-center justify-center text-primary"></i>
                         <p class="text-sm text-gray-500 font-semibold">
-                            {{ formatToBangla(10000) }} এরও বেশি অভিজ্ঞ ও বিশেষজ্ঞ পরামর্শদাতা
+                            {{ formatToBangla(10000) }} এরও বেশি অভিজ্ঞ ও বিশেষজ্ঞ পরামর্শদাতা।
                         </p>
                     </div>
                     <div
@@ -84,7 +84,7 @@
                         <i
                             class="ri-chat-smile-2-fill min-w-10 min-h-10 bg-secondary/10 rounded-full flex items-center justify-center text-secondary"></i>
                         <p class="text-sm text-gray-500 font-semibold">
-                            {{ formatToBangla(1000000) }}+ শিক্ষার্থীর রেটিং ও রিভিউ
+                            {{ formatToBangla(1000000) }}+ শিক্ষার্থীর রেটিং ও রিভিউ এর সাথে {{config('app.name')}}।
                         </p>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
     {{-- statics end --}}
 
     {{-- question maker demo --}}
-    <section class="py-20 w-full border-b border-dotted border-gray-200">
+    <section class="py-15 w-full border-b border-dotted border-gray-200">
         <div class="safearea flex-col">
             <div>
                 <h1 class="text-3xl font-bold text-dark text-center">১ ক্লিকে প্রশ্ন তৈরী!</h1>
@@ -131,8 +131,6 @@
                             </div>
                         @endforeach
                     </div>
-                    <x-ui.button target='loadmore' size='sm' text='আরো দেখুন' iconclass='ri-refresh-line'
-                        class='mt-4 mx-auto' />
                 </div>
 
                 <div class="bg-gray-100 rounded-base p-2">
@@ -183,7 +181,7 @@
     {{-- question maker demo end --}}
 
     {{-- revies --}}
-    <section class="py-20 w-full bg-gray-50/80">
+    <section class="py-15 w-full bg-gray-50/80">
         <div class="safearea flex-col overflow-hidden">
             <div>
                 <h1 class="text-3xl font-bold text-dark text-center">দেখে নিন কি বলছেন!</h1>
@@ -198,7 +196,7 @@
     {{-- revies end --}}
 
     {{-- faqs --}}
-    <section class="py-20 w-full">
+    <section class="py-15 w-full">
         <div class="safearea flex-col">
             <div>
                 <h1 class="text-3xl font-bold text-dark text-center">প্রায়শই জিজ্ঞাসিত প্রশ্নাবলী (FAQ)</h1>

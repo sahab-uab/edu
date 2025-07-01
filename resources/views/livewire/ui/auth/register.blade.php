@@ -13,23 +13,28 @@
             </div>
 
             <div class="flex flex-col gap-4 mt-4">
-                <a href="{{ route('google.redirect') }}" class="btn border border-gray-200 bg-gray-50 justify-center">
-                    <i class="ri-google-fill"></i>
-                    <span>গুগল দিয়ে লগিন করুন</span>
-                </a>
-                <div class="flex items-center justify-between my-2">
-                    <div class="w-full h-[1px] border-b border-gray-300"></div>
-                    <span class="mx-5 text-sm font-semibold text-gray-500">আথবা</span>
-                    <div class="w-full h-[1px] border-b border-gray-300"></div>
-                </div>
-                
-                <x-ui.alert/>
+                @if ($googleLoginStatus == 'on')
+                    <a href="{{ route('google.redirect') }}"
+                        class="btn border border-gray-200 bg-gray-50 justify-center">
+                        <i class="ri-google-fill"></i>
+                        <span>গুগল দিয়ে লগিন করুন</span>
+                    </a>
+                    <div class="flex items-center justify-between">
+                        <div class="w-full h-[1px] border-b border-gray-300"></div>
+                        <span class="mx-5 text-sm font-semibold text-gray-500">আথবা</span>
+                        <div class="w-full h-[1px] border-b border-gray-300"></div>
+                    </div>
+                @endif
+
+                <x-ui.alert />
 
                 <form wire:submit.prevent="registetion" class="flex flex-col gap-4 w-full">
-                    <x-ui.input wire:model='name' target='name' label='আপনার নাম' type='text' class='w-full' hint='নাম লিখুন' />
-                    <x-ui.input wire:model='email' target='email' label='ইমেইল' type='email' class='w-full' hint='ইমেইল দিন' />
-                    <x-ui.input wire:model='password' target='password' label='পাসওয়ার্ড' type='password' class='w-full'
-                        hint='পাসওয়ার্ড দিন' />
+                    <x-ui.input wire:model='name' target='name' label='আপনার নাম' type='text' class='w-full'
+                        hint='নাম লিখুন' />
+                    <x-ui.input wire:model='email' target='email' label='ইমেইল' type='email' class='w-full'
+                        hint='ইমেইল দিন' />
+                    <x-ui.input wire:model='password' target='password' label='পাসওয়ার্ড' type='password'
+                        class='w-full' hint='পাসওয়ার্ড দিন' />
                     <x-ui.button type='submit' target='registetion' text='রেজিস্ট্রেশন' class="justify-center" />
                 </form>
             </div>
